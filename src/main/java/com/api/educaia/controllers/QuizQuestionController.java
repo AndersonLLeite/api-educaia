@@ -3,7 +3,7 @@ package com.api.educaia.controllers;
 import com.api.educaia.dtos.QuizQuestionDTO;
 import com.api.educaia.models.QuizQuestionModel;
 import com.api.educaia.models.TaskModel;
-import com.api.educaia.services.QuizquestionService;
+import com.api.educaia.services.QuizQuestionService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,19 +17,19 @@ import java.util.List;
 @RequestMapping("/educaia")
 public class QuizQuestionController {
     @Autowired
-    private QuizquestionService quizQuestionService;
+    private QuizQuestionService quizQuestionService;
 
     @RequestMapping(value = "/quiz-question/", method = RequestMethod.POST)
-    public ResponseEntity<?> criarQuizQuestion(@RequestBody QuizQuestionDTO quizQuestionDTO) {
+    public ResponseEntity<?> criateQuizQuestion(@RequestBody QuizQuestionDTO quizQuestionDTO) {
         var quizQuestion = new QuizQuestionModel();
         BeanUtils.copyProperties(quizQuestionDTO, quizQuestion);
-        QuizQuestionModel quizQuestionModel = quizQuestionService.criaQuizQuestion(quizQuestion);
+        QuizQuestionModel quizQuestionModel = quizQuestionService.criateQuizQuestion(quizQuestion);
 
         return new ResponseEntity<QuizQuestionModel>(quizQuestionModel, HttpStatus.CREATED);
     }
-    @RequestMapping(value = "/listar-questions}", method = RequestMethod.GET)
-    public ResponseEntity<?> listarQuizQuestions() {
-        List<QuizQuestionModel> quizQuestions = quizQuestionService.listarQuizQuestions();
+    @RequestMapping(value = "/list-questions", method = RequestMethod.GET)
+    public ResponseEntity<?> listQuizQuestions() {
+        List<QuizQuestionModel> quizQuestions = quizQuestionService.listQuizQuestions();
         return new ResponseEntity<List<QuizQuestionModel>>(quizQuestions, HttpStatus.OK);
     }
 }

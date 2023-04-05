@@ -10,11 +10,22 @@ public class TaskDTO  {
     private String title;
     private String description;
     private int deadLineDate;
-//    private List<QuizQuestionDTO> quizQuestions;
-//
-//    private boolean quizIsDone;
-//    private boolean rateIsDone;
+    private int creationDate;
+    private List<QuizQuestionDTO> quizQuestions;
 
+    public List<QuizQuestionDTO> getQuizQuestions() {
+        return quizQuestions;
+    }
+
+    public void setQuizQuestions(List<QuizQuestionDTO> quizQuestions) {
+        this.quizQuestions = quizQuestions;
+    }
+    public int getCreationDate() {
+        return creationDate;
+    }
+    public void setCreationDate(int creationDate) {
+        this.creationDate = creationDate;
+    }
 
     public String getSubject() {
         return subject;
@@ -56,27 +67,5 @@ public class TaskDTO  {
         this.deadLineDate = deadLineDate;
     }
 
-//    public List<QuizQuestionDTO> getQuizQuestions() {
-//        return quizQuestions;
-//    }
 //
-//    public void setQuizQuestions(List<QuizQuestionDTO> quizQuestions) {
-//        this.quizQuestions = quizQuestions;
-//    }
-//
-//    public boolean isQuizIsDone() {
-//        return quizIsDone;
-//    }
-//
-//    public void setQuizIsDone(boolean quizIsDone) {
-//        this.quizIsDone = quizIsDone;
-//    }
-//
-//    public boolean isRateIsDone() {
-//        return rateIsDone;
-//    }
-//
-//    public void setRateIsDone(boolean rateIsDone) {
-//        this.rateIsDone = rateIsDone;
-//    }
 }

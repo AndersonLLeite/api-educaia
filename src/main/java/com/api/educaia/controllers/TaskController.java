@@ -21,18 +21,18 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @RequestMapping(value = "/task/", method = RequestMethod.POST)
-    public ResponseEntity<?> criarTask(@RequestBody TaskDTO taskDTO) {
+    @RequestMapping(value = "/create-task/", method = RequestMethod.POST)
+    public ResponseEntity<?> criateTask(@RequestBody TaskDTO taskDTO) {
         var taskModel = new TaskModel();
         BeanUtils.copyProperties(taskDTO, taskModel);
-        TaskModel taskModelResponse  = taskService.save(taskModel);
+        TaskModel taskModelResponse  = taskService.createTask(taskModel);
 
         return new ResponseEntity<Long>(taskModelResponse.getId(), HttpStatus.CREATED);
     }
-    @RequestMapping(value = "/tasks", method = RequestMethod.GET)
-    public ResponseEntity<?> listarTasks() {
+    @RequestMapping(value = "/list-tasks", method = RequestMethod.GET)
+    public ResponseEntity<?> listTasks() {
 
-        List<TaskModel> tasks = taskService.listarTasks();
+        List<TaskModel> tasks = taskService.listTasks();
 
         if (tasks.isEmpty()) {
             return new ResponseEntity(HttpStatus.NO_CONTENT);

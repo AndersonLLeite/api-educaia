@@ -11,22 +11,19 @@ public class TaskModel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-
     @Column(name = "subject")
     private String subject;
-
     @Column(name = "teacher_name")
     private String teacherName;
-
     @Column(name = "title")
     private String title;
-
     @Column(name = "description")
     private String description;
-
     @Column(name = "deadline_date")
     private int deadLineDate;
+
+    @Column(name = "creation_date")
+    private int creationDate;
 
     @OneToMany( cascade = CascadeType.ALL)
     @JoinColumn(name = "task_id")
@@ -43,6 +40,14 @@ public class TaskModel {
     public void addQuizQuestion(QuizQuestionModel quizQuestion) {
         quizQuestion.setTaskId(this.id);
         this.quizQuestions.add(quizQuestion);
+    }
+
+    public void setCreationDate(int creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public int getCreationDate() {
+        return creationDate;
     }
     public Long getId() {
         return id;
