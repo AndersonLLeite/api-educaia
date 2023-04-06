@@ -9,21 +9,13 @@ public class TaskDTO  {
     private String teacherName;
     private String title;
     private String description;
-    private int deadLineDate;
-    private int creationDate;
-    private List<QuizQuestionDTO> quizQuestions;
+    private Long deadLineDate;
+    private Long creationDate;
 
-    public List<QuizQuestionDTO> getQuizQuestions() {
-        return quizQuestions;
-    }
-
-    public void setQuizQuestions(List<QuizQuestionDTO> quizQuestions) {
-        this.quizQuestions = quizQuestions;
-    }
-    public int getCreationDate() {
+    public Long getCreationDate() {
         return creationDate;
     }
-    public void setCreationDate(int creationDate) {
+    public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -59,11 +51,11 @@ public class TaskDTO  {
         this.description = description;
     }
 
-    public int getDeadLineDate() {
+    public Long getDeadLineDate() {
         return deadLineDate;
     }
 
-    public void setDeadLineDate(int deadLineDate) {
+    public void setDeadLineDate(Long deadLineDate) {
         this.deadLineDate = deadLineDate;
     }
 

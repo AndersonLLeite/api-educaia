@@ -15,4 +15,5 @@ public interface TaskService {
     public TaskModel createTask(TaskModel taskModel);
     public List<TaskModel> listTasks();
 
+    List<TaskModel> getTasksByCreationDate(Long creationDate);
 }

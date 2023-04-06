@@ -20,14 +20,14 @@ public class TaskModel {
     @Column(name = "description")
     private String description;
     @Column(name = "deadline_date")
-    private int deadLineDate;
+    private Long deadLineDate;
 
     @Column(name = "creation_date")
-    private int creationDate;
+    private Long creationDate;
 
     @OneToMany( cascade = CascadeType.ALL)
     @JoinColumn(name = "task_id")
-    private List<QuizQuestionModel> quizQuestions;
+    private List<QuizQuestionModel> quizQuestions = new ArrayList<>();
 
 
     @Column(name = "quiz_is_done")
@@ -42,11 +42,11 @@ public class TaskModel {
         this.quizQuestions.add(quizQuestion);
     }
 
-    public void setCreationDate(int creationDate) {
+    public void setCreationDate(Long creationDate) {
         this.creationDate = creationDate;
     }
 
-    public int getCreationDate() {
+    public Long getCreationDate() {
         return creationDate;
     }
     public Long getId() {
@@ -89,11 +89,11 @@ public class TaskModel {
         this.description = description;
     }
 
-    public int getDeadLineDate() {
+    public Long getDeadLineDate() {
         return deadLineDate;
     }
 
-    public void setDeadLineDate(int deadLineDate) {
+    public void setDeadLineDate(Long deadLineDate) {
         this.deadLineDate = deadLineDate;
     }
 

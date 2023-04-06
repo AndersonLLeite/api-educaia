@@ -23,4 +23,9 @@ public class TaskServiceImpl implements TaskService{
         return taskRepository.findAll();
     }
 
+    @Override
+    public List<TaskModel> getTasksByCreationDate(Long creationDate) {
+        return taskRepository.findByCreationDate(creationDate);
+    }
+
 }

@@ -16,28 +16,29 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/educaia")
+@RequestMapping("/api")
 public class TaskController {
     @Autowired
     private TaskService taskService;
 
     @RequestMapping(value = "/create-task/", method = RequestMethod.POST)
-    public ResponseEntity<?> criateTask(@RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<?> createTask(@RequestBody TaskDTO taskDTO) {
         var taskModel = new TaskModel();
         BeanUtils.copyProperties(taskDTO, taskModel);
         TaskModel taskModelResponse  = taskService.createTask(taskModel);
 
-        return new ResponseEntity<Long>(taskModelResponse.getId(), HttpStatus.CREATED);
+        return new ResponseEntity<TaskModel>(taskModelResponse, HttpStatus.CREATED);
     }
     @RequestMapping(value = "/list-tasks", method = RequestMethod.GET)
     public ResponseEntity<?> listTasks() {
 
         List<TaskModel> tasks = taskService.listTasks();
+        return new ResponseEntity<List<TaskModel>>(tasks, HttpStatus.OK);
+    }
 
-        if (tasks.isEmpty()) {
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }
-
+    @RequestMapping(value = "/list-tasks/{creationDate}", method = RequestMethod.GET)
+    public ResponseEntity<?> getTasksByCreationDate(@PathVariable("creationDate") Long creationDate) {
+        List<TaskModel> tasks = taskService.getTasksByCreationDate(creationDate);
         return new ResponseEntity<List<TaskModel>>(tasks, HttpStatus.OK);
     }
 
