@@ -9,4 +9,5 @@ import java.util.Optional;
 
 public interface TaskRepository extends JpaRepository<TaskModel, Long> {
    List<TaskModel> findByCreationDate(Long creationDate);
+   Optional<TaskModel>  findById(Long id);
 }

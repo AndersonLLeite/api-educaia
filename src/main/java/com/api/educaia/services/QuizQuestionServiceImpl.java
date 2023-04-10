@@ -5,6 +5,7 @@ import com.api.educaia.repositories.QuizQuestionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -13,7 +14,8 @@ public class QuizQuestionServiceImpl implements QuizQuestionService{
     private QuizQuestionRepository quizQuestionRepository;
     @Autowired
     private TaskService taskService;
-    public QuizQuestionModel criateQuizQuestion(QuizQuestionModel quizQuestionModel) {
+    @Transactional
+    public QuizQuestionModel createQuizQuestion(QuizQuestionModel quizQuestionModel) {
         return quizQuestionRepository.save(quizQuestionModel);
     }
 

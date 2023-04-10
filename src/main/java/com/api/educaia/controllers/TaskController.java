@@ -9,10 +9,12 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -21,14 +23,15 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @RequestMapping(value = "/create-task/", method = RequestMethod.POST)
-    public ResponseEntity<?> createTask(@RequestBody TaskDTO taskDTO) {
+    @RequestMapping(value = "/create-task", method = RequestMethod.POST)
+    public ResponseEntity<?> createTask(@RequestBody @Valid  TaskDTO taskDTO) {
         var taskModel = new TaskModel();
         BeanUtils.copyProperties(taskDTO, taskModel);
         TaskModel taskModelResponse  = taskService.createTask(taskModel);
 
         return new ResponseEntity<TaskModel>(taskModelResponse, HttpStatus.CREATED);
     }
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     @RequestMapping(value = "/list-tasks", method = RequestMethod.GET)
     public ResponseEntity<?> listTasks() {
 
@@ -41,6 +44,22 @@ public class TaskController {
         List<TaskModel> tasks = taskService.getTasksByCreationDate(creationDate);
         return new ResponseEntity<List<TaskModel>>(tasks, HttpStatus.OK);
     }
+    @RequestMapping(value = "/task-quiz-finished/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<?> taskQuizFinished(@PathVariable("id") Long id) {
+        Optional<TaskModel> taskOp = taskService.getTaskById(id);
+
+
+        if (!taskOp.isPresent()) {
+            return new ResponseEntity<String>("Task not found", HttpStatus.NOT_FOUND);
+        }
+
+        TaskModel task = taskOp.get();
+        task.setQuizIsDone(true);
+        taskService.saveTask(task);
+        System.out.println(task);
+        return new ResponseEntity<TaskModel>(task, HttpStatus.OK);
+    }
+
 
 
 }
