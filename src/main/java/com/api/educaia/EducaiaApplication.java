@@ -9,7 +9,6 @@ public class EducaiaApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(EducaiaApplication.class, args);
-		//System.out.println(new BCryptPasswordEncoder().encode("senha123"));
 	}
 
 }

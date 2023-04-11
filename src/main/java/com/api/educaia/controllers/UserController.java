@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/api")
+@RequestMapping("/api/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -37,8 +37,8 @@ public class UserController {
         List<UserModel> users = userService.listUsers();
         return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
     }
-    @GetMapping("/v1/me")
-    public ResponseEntity<UserModel> getUserDetails() {
+    @GetMapping("/me")
+    public ResponseEntity<?> getUserDetails() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
         Optional<UserModel> userOp = userService.getUserByUsername(userDetails.getUsername());

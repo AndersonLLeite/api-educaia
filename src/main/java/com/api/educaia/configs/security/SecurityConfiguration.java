@@ -28,6 +28,9 @@ public class SecurityConfiguration {
                 .disable()
                 .authorizeHttpRequests()
                 .antMatchers("/api/v1/auth/**")
+
+                .permitAll()
+                .antMatchers("/api/school/create-school")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

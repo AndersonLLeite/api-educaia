@@ -30,10 +30,17 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponse register(RegisterRequest request) {
+        RoleName role = switch (request.getRole()) {
+            case "ROLE_ADMIN" -> RoleName.ROLE_ADMIN;
+            case "ROLE_TEACHER" -> RoleName.ROLE_TEACHER;
+            case "ROLE_PARENT" -> RoleName.ROLE_PARENT;
+            default -> RoleName.ROLE_STUDENT;
+        };
         var user = UserModel.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
-                .role(RoleName.ROLE_USER)
+                .role(role)
+                .schoolId(request.getSchoolId())
                 .build();
         var savedUser = repository.save(user);
         var jwtToken = jwtService.generateToken(user);

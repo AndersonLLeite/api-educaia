@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+import com.api.educaia.enums.LevelsOfEducationEnum;
 import com.api.educaia.enums.RoleName;
 import com.api.educaia.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -41,6 +42,23 @@ public class UserModel implements UserDetails, Serializable {
     @OneToMany(mappedBy = "user")
     @JsonIgnore
     private List<Token> tokens;
+
+    private String schoolId;
+    private String profileImagePath;
+    private int points;
+    @ElementCollection
+    private List<String> medalImagePath;
+    private String classId;
+    @ManyToMany
+    @JoinTable(
+            name = "user_class",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "class_id")
+    )
+    private List<ClassModel> classes;
+    @Enumerated(EnumType.STRING)
+    private LevelsOfEducationEnum levelsOfEducation;
+    private String childID;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
