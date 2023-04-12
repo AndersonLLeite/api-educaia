@@ -35,6 +35,7 @@ public class UserModel implements UserDetails, Serializable {
     private UUID id;
     private String username;
     private String password;
+    private String nameComplete;
 
     @Enumerated(EnumType.STRING)
     private RoleName role;

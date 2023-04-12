@@ -32,6 +32,8 @@ public class SecurityConfiguration {
                 .permitAll()
                 .antMatchers("/api/school/create-school")
                 .permitAll()
+                .antMatchers("/api/**")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

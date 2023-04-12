@@ -40,4 +40,9 @@ public class TaskServiceImpl implements TaskService{
         return taskRepository.save(taskModel);
     }
 
+    @Override
+    public Long countTasksByClassIdAndCreationDate(String classId, long todayMillis) {
+        return taskRepository.countTasksByClassIdAndCreationDate(classId, todayMillis);
+    }
+
 }

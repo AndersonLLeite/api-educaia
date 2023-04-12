@@ -13,6 +13,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 
@@ -58,6 +60,16 @@ public class TaskController {
         taskService.saveTask(task);
         System.out.println(task);
         return new ResponseEntity<TaskModel>(task, HttpStatus.OK);
+    }
+
+    @GetMapping("/countByClassIdAndToday/{classId}")
+    public ResponseEntity<Long> countTasksByClassIdAndToday(@PathVariable String classId) {
+        LocalDate today = LocalDate.now();
+        ZoneId zoneId = ZoneId.of("America/Sao_Paulo");
+        long todayMillis = today.atStartOfDay(zoneId).toEpochSecond() * 1000;
+
+        Long count = taskService.countTasksByClassIdAndCreationDate(classId, todayMillis);
+        return ResponseEntity.ok(count);
     }
 
 

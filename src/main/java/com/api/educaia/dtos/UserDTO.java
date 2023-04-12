@@ -14,6 +14,8 @@ public class UserDTO {
     @NotBlank
     private String username;
     @NotBlank
+    private String nameComplete;
+    @NotBlank
     private String password;
     @NotBlank
     private String role;

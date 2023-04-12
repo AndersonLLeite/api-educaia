@@ -20,4 +20,6 @@ public interface TaskService {
     Optional<TaskModel> getTaskById(Long id);
 
     TaskModel saveTask(TaskModel taskModel);
+
+    Long countTasksByClassIdAndCreationDate(String classId, long todayMillis);
 }

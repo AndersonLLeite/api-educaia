@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -27,5 +28,9 @@ public class ClassController {
         ClassModel classModelResponse  = classService.createClass(classModel);
 
         return new ResponseEntity<ClassModel>(classModelResponse, HttpStatus.CREATED);
+    }
+    @GetMapping("/list-classes")
+    public ResponseEntity<?> listClasses() {
+        return new ResponseEntity<>(classService.listClasses(), HttpStatus.OK);
     }
 }

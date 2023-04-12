@@ -22,5 +22,9 @@ public class TaskDTO  {
     private Long deadLineDate;
     @NotNull
     private Long creationDate;
+    @NotBlank
+    private String classId;
+    @NotBlank
+    private String schoolId;
 
 }
