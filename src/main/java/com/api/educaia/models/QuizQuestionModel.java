@@ -7,13 +7,16 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
+import java.util.UUID;
+
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "TB_QUIZ_QUESTION")
-public class QuizQuestionModel {
+public class QuizQuestionModel{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -32,6 +35,6 @@ public class QuizQuestionModel {
 
     @NotNull
     @Column(name = "task_id")
-    private Long taskId;
+    private UUID taskId;
 
 }

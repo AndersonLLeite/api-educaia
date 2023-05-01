@@ -17,7 +17,7 @@ public interface TaskService {
 
     List<TaskModel> getTasksByCreationDate(Long creationDate);
 
-    Optional<TaskModel> getTaskById(Long id);
+    Optional<TaskModel> getTaskById(String id);
 
     TaskModel saveTask(TaskModel taskModel);
 

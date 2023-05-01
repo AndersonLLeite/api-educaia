@@ -31,7 +31,7 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public Optional<TaskModel> getTaskById(Long id) {
+    public Optional<TaskModel> getTaskById(String id) {
         return taskRepository.findById(id);
     }
 

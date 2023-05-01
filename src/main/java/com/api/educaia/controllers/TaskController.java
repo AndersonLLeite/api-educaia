@@ -3,6 +3,7 @@ package com.api.educaia.controllers;
 import com.api.educaia.dtos.QuizQuestionDTO;
 import com.api.educaia.dtos.TaskDTO;
 import com.api.educaia.models.QuizQuestionModel;
+import com.api.educaia.models.RateQuestion;
 import com.api.educaia.models.TaskModel;
 import com.api.educaia.services.TaskService;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -47,7 +49,7 @@ public class TaskController {
         return new ResponseEntity<List<TaskModel>>(tasks, HttpStatus.OK);
     }
     @RequestMapping(value = "/task-quiz-finished/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> taskQuizFinished(@PathVariable("id") Long id) {
+    public ResponseEntity<?> taskQuizFinished(@PathVariable("id") String id) {
         Optional<TaskModel> taskOp = taskService.getTaskById(id);
 
 
@@ -71,6 +73,20 @@ public class TaskController {
         Long count = taskService.countTasksByClassIdAndCreationDate(classId, todayMillis);
         return ResponseEntity.ok(count);
     }
+
+    @GetMapping("/getRateQuestions")
+    public ResponseEntity<List<RateQuestion>> getRoleQuestions()
+    {
+        List<RateQuestion> rateQuestions = new ArrayList<>();
+        rateQuestions.add(new RateQuestion("'A tarefa foi clara e objetiva?'",0));
+        rateQuestions.add(new RateQuestion("A tarefa foi desafiadora?",0));
+        rateQuestions.add(new RateQuestion("A tarefa foi útil para o aprendizado?",0));
+        rateQuestions.add(new RateQuestion("A tarefa foi adequada para o seu nível de conhecimento?",0));
+        rateQuestions.add(new RateQuestion("A tarefa exigiu um tempo razoável para ser concluída?",0));
+        rateQuestions.add(new RateQuestion("A tarefa permitiu que você aplicasse os conceitos aprendidos em sala de aula?",0));
+        return ResponseEntity.ok(rateQuestions);
+    }
+
 
 
 
