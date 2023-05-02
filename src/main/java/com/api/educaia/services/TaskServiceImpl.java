@@ -1,7 +1,9 @@
 package com.api.educaia.services;
 
+import com.api.educaia.models.RateModel;
 import com.api.educaia.models.TaskModel;
 import com.api.educaia.repositories.QuizQuestionRepository;
+import com.api.educaia.repositories.RateRepository;
 import com.api.educaia.repositories.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,11 +11,15 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class TaskServiceImpl implements TaskService{
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private RateRepository rateResponseRepository;
 
     @Autowired
     private QuizQuestionRepository quizQuestionRepository;
@@ -31,7 +37,7 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public Optional<TaskModel> getTaskById(String id) {
+    public Optional<TaskModel> getTaskById(UUID id) {
         return taskRepository.findById(id);
     }
 
@@ -44,5 +50,13 @@ public class TaskServiceImpl implements TaskService{
     public Long countTasksByClassIdAndCreationDate(String classId, long todayMillis) {
         return taskRepository.countTasksByClassIdAndCreationDate(classId, todayMillis);
     }
+    @Transactional
+    @Override
+    public void createRateResponse(UUID taskID) {
+        RateModel rateResponseModel = new RateModel(taskID);
+        rateResponseRepository.save(rateResponseModel);
+    }
+
+
 
 }
