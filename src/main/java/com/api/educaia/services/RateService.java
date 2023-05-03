@@ -12,8 +12,9 @@ import java.util.UUID;
 
 public interface RateService {
     public void createRateModel(UUID taskID);
-    public void updateRateModel(RateModel rateModel, List<Integer> rateAnswers);
+    public void updateRateModel(RateModel rateModel, List<Integer> rateAnswers, String username);
     Optional<RateModel> getRateResponseByTaskId(UUID taskId);
     void saveRateResponse(RateModel rateResponse);
 
+    boolean getRateIsDone(RateModel rateResponse, String username);
 }

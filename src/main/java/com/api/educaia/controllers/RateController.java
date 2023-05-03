@@ -2,6 +2,7 @@ package com.api.educaia.controllers;
 
 import com.api.educaia.models.RateModel;
 import com.api.educaia.models.RateQuestionModel;
+import com.api.educaia.models.TaskModel;
 import com.api.educaia.services.RateService;
 import com.api.educaia.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,8 @@ public class RateController {
     @Autowired
     private TaskService taskService;
 
-    @PutMapping("/updateRateResponse/{taskId}")
-    public ResponseEntity<?> updateRateResponse(@PathVariable UUID taskId, @RequestBody List<Integer> rateAnswers)
+    @PutMapping("/updateRateResponse/{taskId}/{username}")
+    public ResponseEntity<?> updateRateResponse(@PathVariable UUID taskId, @PathVariable String username, @RequestBody List<Integer> rateAnswers)
     {
         Optional<RateModel> rateResponseOp = rateService.getRateResponseByTaskId(taskId);
         if(!rateResponseOp.isPresent())
@@ -34,7 +35,7 @@ public class RateController {
             return new ResponseEntity<String>("RateResponse not found", HttpStatus.NOT_FOUND);
         }
         RateModel rateResponse = rateResponseOp.get();
-        rateService.updateRateModel(rateResponse, rateAnswers);
+        rateService.updateRateModel(rateResponse, rateAnswers, username);
         return ResponseEntity.ok(rateResponse);
 
 
@@ -51,6 +52,7 @@ public class RateController {
         return ResponseEntity.ok(rateResponse);
     }
 
+
     @GetMapping("/getRateQuestions")
     public ResponseEntity<List<RateQuestionModel>> getRateQuestions()
     {
@@ -61,5 +63,18 @@ public class RateController {
         rateQuestions.add(new RateQuestionModel("A tarefa exigiu um tempo razoável para ser concluída?",0));
         rateQuestions.add(new RateQuestionModel("A tarefa permitiu que você aplicasse os conceitos aprendidos em sala de aula?",0));
         return ResponseEntity.ok(rateQuestions);
+    }
+
+    @GetMapping("/getRateIsDone/{taskId}/{username}")
+    public ResponseEntity<?> getRateIsDone(@PathVariable UUID taskId, @PathVariable String username)
+    {
+        Optional<RateModel> rateResponseOp = rateService.getRateResponseByTaskId(taskId);
+        if(!rateResponseOp.isPresent())
+        {
+            return new ResponseEntity<String>("RateResponse not found", HttpStatus.NOT_FOUND);
+        }
+        RateModel rateResponse = rateResponseOp.get();
+        boolean rateISDone = rateService.getRateIsDone(rateResponse, username);
+        return ResponseEntity.ok(rateISDone);
     }
 }

@@ -68,18 +68,6 @@ public class TaskController {
         return new ResponseEntity<TaskModel>(task, HttpStatus.OK);
     }
 
-    //igual o de cima, mas é para atualizar o campo rateIsDone
-    @PutMapping("/task-rate-finished/{id}")
-    public ResponseEntity<?> taskRateFinished(@PathVariable("id") UUID id) {
-        Optional<TaskModel> taskOp = taskService.getTaskById(id);
-        if (!taskOp.isPresent()) {
-            return new ResponseEntity<String>("Task not found", HttpStatus.NOT_FOUND);
-        }
-        TaskModel task = taskOp.get();
-        task.setRateIsDone(true);
-        taskService.saveTask(task);
-        return new ResponseEntity<TaskModel>(task, HttpStatus.OK);
-    }
 
 
     @GetMapping("/countByClassIdAndToday/{classId}")

@@ -21,6 +21,8 @@ public class RateModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private UUID taskId;
+    @ElementCollection
+    private List<String> studentsWhoAnswered;
 
     private int[] question1 = new int[5];
     private int[] question2 = new int[5];
@@ -59,5 +61,9 @@ public class RateModel implements Serializable {
         this.question3[rateQuestions.get(2)] += 1;
         this.question4[rateQuestions.get(3)] += 1;
         this.question5[rateQuestions.get(4)] += 1;
+    }
+
+    public void addStudentWhoAnswered(String username) {
+        this.studentsWhoAnswered.add(username);
     }
 }

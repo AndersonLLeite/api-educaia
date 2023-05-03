@@ -23,8 +23,9 @@ public class RateServiceImpl implements RateService{
     }
 
     @Override
-    public void updateRateModel(RateModel rateModel, List<Integer> rateAnswers) {
+    public void updateRateModel(RateModel rateModel, List<Integer> rateAnswers, String username ) {
         rateModel.setRateQuestionsAddVotes(rateAnswers);
+        rateModel.addStudentWhoAnswered(username);
         rateRepository.save(rateModel);
     }
 
@@ -36,5 +37,10 @@ public class RateServiceImpl implements RateService{
     @Override
     public void saveRateResponse(RateModel rateResponse) {
         rateRepository.save(rateResponse);
+    }
+
+    @Override
+    public boolean getRateIsDone(RateModel rateResponse, String username) {
+        return rateResponse.getStudentsWhoAnswered().contains(username);
     }
 }
