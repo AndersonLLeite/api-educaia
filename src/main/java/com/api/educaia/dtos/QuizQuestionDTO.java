@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuizQuestionDTO {
     @NotNull
-    private Long taskId;
+    private UUID taskId;
     @NotBlank
     private String question;
     @NotNull

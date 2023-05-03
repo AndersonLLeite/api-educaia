@@ -32,8 +32,7 @@ public class TaskModel implements Serializable {
     @OneToMany( cascade = CascadeType.ALL)
     @JoinColumn(name = "task_id")
     private List<QuizQuestionModel> quizQuestions = new ArrayList<>();
-    private boolean quizIsDone = false;
-    private boolean rateIsDone = false;
+
     private String classId;
     private String schoolId;
 

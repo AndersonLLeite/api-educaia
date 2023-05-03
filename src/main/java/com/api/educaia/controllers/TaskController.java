@@ -4,6 +4,7 @@ import com.api.educaia.dtos.TaskDTO;
 import com.api.educaia.models.RateQuestionModel;
 import com.api.educaia.models.RateModel;
 import com.api.educaia.models.TaskModel;
+import com.api.educaia.services.QuizService;
 import com.api.educaia.services.RateService;
 import com.api.educaia.services.TaskService;
 import org.springframework.beans.BeanUtils;
@@ -30,12 +31,17 @@ public class TaskController {
     @Autowired
     private RateService rateService;
 
+    @Autowired
+    private QuizService quizService;
+
     @RequestMapping(value = "/create-task", method = RequestMethod.POST)
     public ResponseEntity<?> createTask(@RequestBody @Valid  TaskDTO taskDTO) {
         var taskModel = new TaskModel();
         BeanUtils.copyProperties(taskDTO, taskModel);
         TaskModel taskModelResponse  = taskService.createTask(taskModel);
         rateService.createRateModel(taskModelResponse.getId());
+        quizService.createQuiz(taskModelResponse.getId());
+
 
         return new ResponseEntity<TaskModel>(taskModelResponse, HttpStatus.CREATED);
     }
@@ -52,24 +58,6 @@ public class TaskController {
         List<TaskModel> tasks = taskService.getTasksByCreationDate(creationDate);
         return new ResponseEntity<List<TaskModel>>(tasks, HttpStatus.OK);
     }
-    @RequestMapping(value = "/task-quiz-finished/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<?> taskQuizFinished(@PathVariable("id") UUID id) {
-        Optional<TaskModel> taskOp = taskService.getTaskById(id);
-
-
-        if (!taskOp.isPresent()) {
-            return new ResponseEntity<String>("Task not found", HttpStatus.NOT_FOUND);
-        }
-
-        TaskModel task = taskOp.get();
-        task.setQuizIsDone(true);
-        taskService.saveTask(task);
-        System.out.println(task);
-        return new ResponseEntity<TaskModel>(task, HttpStatus.OK);
-    }
-
-
-
     @GetMapping("/countByClassIdAndToday/{classId}")
     public ResponseEntity<Long> countTasksByClassIdAndToday(@PathVariable String classId) {
         LocalDate today = LocalDate.now();
