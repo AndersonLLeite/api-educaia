@@ -1,5 +1,6 @@
 package com.api.educaia.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ public class QuizQuestionModel{
     private List<String> answers;
 
     @NotNull
+    @JsonIgnore
     @Column(name = "correct_answer")
     private Integer correctAnswer;
 

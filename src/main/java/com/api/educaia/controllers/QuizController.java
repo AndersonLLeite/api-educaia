@@ -1,10 +1,10 @@
 package com.api.educaia.controllers;
 
 import com.api.educaia.dtos.QuizQuestionDTO;
-import com.api.educaia.models.QuizModel;
-import com.api.educaia.models.QuizQuestionModel;
-import com.api.educaia.models.RateModel;
+import com.api.educaia.models.*;
 import com.api.educaia.services.QuizService;
+import com.api.educaia.services.TaskService;
+import com.api.educaia.services.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +22,12 @@ import java.util.UUID;
 public class QuizController {
     @Autowired
     private QuizService quizService;
+
+    @Autowired
+    private TaskService taskService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/create-quiz-question", method = RequestMethod.POST)
     public ResponseEntity<?> createQuizQuestion(@RequestBody @Valid QuizQuestionDTO quizQuestionDTO) {
@@ -51,7 +57,7 @@ public class QuizController {
     }
 
     @PutMapping("/updateQuizAddAnswerer/{taskId}/{username}")
-    public ResponseEntity<?> updateQuizAddAnswerer(@PathVariable UUID taskId, @PathVariable String username)
+    public ResponseEntity<?> updateQuizAddAnswerer(@PathVariable UUID taskId, @PathVariable String username, @RequestBody List<Integer> quizAnswers)
     {
         Optional<QuizModel> quizOp = quizService.getQuizByTaskId(taskId);
         if(!quizOp.isPresent())
@@ -60,7 +66,24 @@ public class QuizController {
         }
         QuizModel quiz = quizOp.get();
         quizService.updateQuizAddAnswerer(quiz, username);
-        return ResponseEntity.ok(quiz);
+
+        Optional<TaskModel> taskOp = taskService.getTaskById(taskId);
+        if(!taskOp.isPresent())
+        {
+            return new ResponseEntity<String>("Task not found", HttpStatus.NOT_FOUND);
+        }
+        TaskModel task = taskOp.get();
+        int score = quizService.calculateQuizScore(task, quizAnswers);
+        int points = quizService.calculateQuizPoints(score);
+        Optional<UserModel> userOp = userService.getUserByUsername(username);
+        if(!userOp.isPresent())
+        {
+            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
+        }
+        UserModel user = userOp.get();
+        userService.addPointsToUser(user, points);
+        List<Integer> result = List.of(score, points);
+        return ResponseEntity.ok(result);
     }
 
     //TODO apenas para testes retirar depois

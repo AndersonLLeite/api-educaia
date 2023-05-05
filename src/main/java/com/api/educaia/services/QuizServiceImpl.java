@@ -2,6 +2,7 @@ package com.api.educaia.services;
 
 import com.api.educaia.models.QuizModel;
 import com.api.educaia.models.QuizQuestionModel;
+import com.api.educaia.models.TaskModel;
 import com.api.educaia.repositories.QuizQuestionRepository;
 import com.api.educaia.repositories.QuizRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.util.UUID;
 
 @Service
 public class QuizServiceImpl implements QuizService {
+    private static final int QUIZ_POINT_MULTIPLIER = 10;
     @Autowired
     private QuizQuestionRepository quizQuestionRepository;
 
@@ -55,5 +57,24 @@ public class QuizServiceImpl implements QuizService {
     @Override
     public List<QuizModel> listQuiz() {
         return quizRepository.findAll();
+    }
+
+    @Override
+    public int calculateQuizScore(TaskModel taskOp, List<Integer> quizAnswers) {
+        List<Integer> correctAnswers = taskOp.getCorrectAnswers();
+        int score = 0;
+        for (int i = 0; i < quizAnswers.size(); i++) {
+            if(quizAnswers.get(i) != -1) {
+                if (quizAnswers.get(i) == correctAnswers.get(i)) {
+                    score++;
+                }
+            }
+        }
+        return score;
+    }
+
+    @Override
+    public int calculateQuizPoints(int score) {
+        return score * QUIZ_POINT_MULTIPLIER;
     }
 }

@@ -31,5 +31,11 @@ public class UserServiceImpl implements  UserService{
         return userRepository.findByUsername(username);
     }
 
+    @Override
+    public void addPointsToUser(UserModel user, int points) {
+        user.setPoints(user.getPoints() + points);
+        userRepository.save(user);
+    }
+
 
 }

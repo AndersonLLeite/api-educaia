@@ -31,6 +31,11 @@ public class SecurityConfiguration {
 
                 .permitAll()
                 .antMatchers("/api/school/create-school")
+
+                .permitAll()
+
+
+                .antMatchers("/swagger-ui.html", "/swagger-resources/**", "/v2/api-docs", "/webjars/**")
                 .permitAll()
                 .antMatchers("/api/**")
                 .permitAll()

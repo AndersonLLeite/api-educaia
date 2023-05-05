@@ -21,4 +21,5 @@ public class QuizQuestionDTO {
     private List<String> answers;
     @NotNull
     private int correctAnswer;
+
 }

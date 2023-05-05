@@ -37,4 +37,11 @@ public class TaskModel implements Serializable {
     private String schoolId;
 
 
+    public List<Integer> getCorrectAnswers() {
+        List<Integer> correctAnswers = new ArrayList<>();
+        for (QuizQuestionModel quizQuestion : quizQuestions) {
+            correctAnswers.add(quizQuestion.getCorrectAnswer());
+        }
+        return correctAnswers;
+    }
 }

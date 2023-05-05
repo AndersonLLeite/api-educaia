@@ -2,6 +2,7 @@ package com.api.educaia.services;
 
 import com.api.educaia.models.QuizModel;
 import com.api.educaia.models.QuizQuestionModel;
+import com.api.educaia.models.TaskModel;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +23,8 @@ public interface QuizService {
     void updateQuizAddAnswerer(QuizModel quiz, String username);
 
     List<QuizModel> listQuiz();
+
+    int calculateQuizScore(TaskModel taskOp, List<Integer> quizAnswers);
+
+    int calculateQuizPoints(int score);
 }

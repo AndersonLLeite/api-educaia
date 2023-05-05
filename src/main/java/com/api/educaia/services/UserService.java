@@ -1,6 +1,5 @@
 package com.api.educaia.services;
 
-import com.api.educaia.dtos.UserDTO;
 import com.api.educaia.models.UserModel;
 
 import java.util.List;
@@ -14,4 +13,6 @@ public interface UserService {
 
 
     Optional<UserModel> getUserByUsername(String username);
+
+    void addPointsToUser(UserModel user, int points);
 }

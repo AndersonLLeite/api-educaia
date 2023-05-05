@@ -3,8 +3,10 @@ package com.api.educaia.controllers;
 import com.api.educaia.models.RateModel;
 import com.api.educaia.models.RateQuestionModel;
 import com.api.educaia.models.TaskModel;
+import com.api.educaia.models.UserModel;
 import com.api.educaia.services.RateService;
 import com.api.educaia.services.TaskService;
+import com.api.educaia.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,9 @@ public class RateController {
     @Autowired
     private TaskService taskService;
 
+    @Autowired
+    UserService userService;
+
     @PutMapping("/updateRateResponse/{taskId}/{username}")
     public ResponseEntity<?> updateRateResponse(@PathVariable UUID taskId, @PathVariable String username, @RequestBody List<Integer> rateAnswers)
     {
@@ -36,6 +41,14 @@ public class RateController {
         }
         RateModel rateResponse = rateResponseOp.get();
         rateService.updateRateModel(rateResponse, rateAnswers, username);
+
+        Optional<UserModel> userOp = userService.getUserByUsername(username);
+        if(!userOp.isPresent())
+        {
+            return new ResponseEntity<String>("User not found", HttpStatus.NOT_FOUND);
+        }
+        UserModel user = userOp.get();
+        userService.addPointsToUser(user, 10);
         return ResponseEntity.ok(rateResponse);
 
 

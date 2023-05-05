@@ -22,5 +22,4 @@ public interface TaskService {
     void createRateResponse(UUID taskID);
 
 
-
 }
