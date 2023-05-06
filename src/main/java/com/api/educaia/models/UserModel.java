@@ -34,6 +34,7 @@ public class UserModel implements UserDetails, Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String username;
+    @JsonIgnore
     private String password;
     private String nameComplete;
 

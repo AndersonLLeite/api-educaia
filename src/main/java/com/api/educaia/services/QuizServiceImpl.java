@@ -60,16 +60,18 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public int calculateQuizScore(TaskModel taskOp, List<Integer> quizAnswers) {
-        List<Integer> correctAnswers = taskOp.getCorrectAnswers();
+    public int calculateQuizScoreAndAddHitToQuizQuestionIfHit(TaskModel task, List<Integer> quizAnswers) {
+        List<Integer> correctAnswers = task.getCorrectAnswers();
         int score = 0;
         for (int i = 0; i < quizAnswers.size(); i++) {
             if(quizAnswers.get(i) != -1) {
                 if (quizAnswers.get(i) == correctAnswers.get(i)) {
                     score++;
+                    task.getQuizQuestions().get(i).addHit();
                 }
             }
         }
+        taskService.saveTask(task);
         return score;
     }
 

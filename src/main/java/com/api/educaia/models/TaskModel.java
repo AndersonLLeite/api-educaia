@@ -1,5 +1,6 @@
 package com.api.educaia.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -36,7 +37,7 @@ public class TaskModel implements Serializable {
     private String classId;
     private String schoolId;
 
-
+    @JsonIgnore
     public List<Integer> getCorrectAnswers() {
         List<Integer> correctAnswers = new ArrayList<>();
         for (QuizQuestionModel quizQuestion : quizQuestions) {

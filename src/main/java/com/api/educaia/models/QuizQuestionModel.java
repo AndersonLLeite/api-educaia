@@ -29,6 +29,7 @@ public class QuizQuestionModel{
     @CollectionTable(name = "question_answers", joinColumns = @JoinColumn(name = "question_id"))
     @Column(name = "answer")
     private List<String> answers;
+    private int hits = 0;
 
     @NotNull
     @JsonIgnore
@@ -38,5 +39,16 @@ public class QuizQuestionModel{
     @NotNull
     @Column(name = "task_id")
     private UUID taskId;
+
+    public QuizQuestionModel(String question, List<String> answers, Integer correctAnswer, UUID taskId) {
+        this.question = question;
+        this.answers = answers;
+        this.correctAnswer = correctAnswer;
+        this.taskId = taskId;
+    }
+
+    public void addHit() {
+        this.hits++;
+    }
 
 }

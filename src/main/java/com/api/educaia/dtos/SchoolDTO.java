@@ -12,4 +12,6 @@ import javax.validation.constraints.NotBlank;
 public class SchoolDTO {
     @NotBlank
     private String name;
+    @NotBlank
+    private String state;
 }

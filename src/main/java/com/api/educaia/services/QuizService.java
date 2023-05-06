@@ -24,7 +24,7 @@ public interface QuizService {
 
     List<QuizModel> listQuiz();
 
-    int calculateQuizScore(TaskModel taskOp, List<Integer> quizAnswers);
+    int calculateQuizScoreAndAddHitToQuizQuestionIfHit(TaskModel task, List<Integer> quizAnswers);
 
     int calculateQuizPoints(int score);
 }
