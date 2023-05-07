@@ -1,6 +1,7 @@
 package com.api.educaia.controllers;
 
 import com.api.educaia.dtos.UserDTO;
+import com.api.educaia.dtos.UserPublicDTO;
 import com.api.educaia.models.UserModel;
 import com.api.educaia.services.UserService;
 import org.springframework.beans.BeanUtils;
@@ -12,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -100,19 +102,22 @@ public class UserController {
     @GetMapping("/getUsersRankByClassId/{classId}")
     public ResponseEntity<?> getUsersRankByClassId(@PathVariable String classId) {
         List<UserModel> users = userService.getUsersRankByClassId(classId);
-        return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
+        List<UserPublicDTO> usersPublic = userService.getUsersPublic(users);
+        return new ResponseEntity<List<UserPublicDTO>>(usersPublic, HttpStatus.OK);
     }
 
     @GetMapping("/getUsersRankBySchoolId/{schoolId}")
     public ResponseEntity<?> getUsersRankBySchoolId(@PathVariable String schoolId) {
         List<UserModel> users = userService.getUsersRankBySchoolId(schoolId);
-        return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
+        List<UserPublicDTO> usersPublic = userService.getUsersPublic(users);
+        return new ResponseEntity<List<UserPublicDTO>>(usersPublic, HttpStatus.OK);
     }
 
     @GetMapping("/getUsersRankOverall")
     public ResponseEntity<?> getUsersRankOverall() {
         List<UserModel> users = userService.getUsersRankOverall();
-        return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
+        List<UserPublicDTO> usersPublic = userService.getUsersPublic(users);
+        return new ResponseEntity<List<UserPublicDTO>>(usersPublic, HttpStatus.OK);
     }
 
 

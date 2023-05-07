@@ -1,5 +1,6 @@
 package com.api.educaia.services;
 
+import com.api.educaia.dtos.UserPublicDTO;
 import com.api.educaia.models.UserModel;
 
 import java.util.List;
@@ -30,4 +31,6 @@ public interface UserService {
     List<UserModel> getUsersRankBySchoolId(String schoolId);
 
     List<UserModel> getUsersRankOverall();
+
+    List<UserPublicDTO> getUsersPublic(List<UserModel> users);
 }

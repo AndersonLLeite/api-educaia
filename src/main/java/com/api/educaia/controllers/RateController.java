@@ -70,7 +70,7 @@ public class RateController {
     public ResponseEntity<List<RateQuestionModel>> getRateQuestions()
     {
         List<RateQuestionModel> rateQuestions = new ArrayList<>();
-        rateQuestions.add(new RateQuestionModel("'A tarefa foi clara e objetiva?'",0));
+        rateQuestions.add(new RateQuestionModel("A tarefa foi clara e objetiva?",0));
         rateQuestions.add(new RateQuestionModel("A tarefa foi útil para o aprendizado?",0));
         rateQuestions.add(new RateQuestionModel("A tarefa foi adequada para o seu nível de conhecimento?",0));
         rateQuestions.add(new RateQuestionModel("A tarefa exigiu um tempo razoável para ser concluída?",0));

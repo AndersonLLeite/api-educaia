@@ -10,10 +10,7 @@ import com.api.educaia.enums.LevelsOfEducationEnum;
 import com.api.educaia.enums.RoleName;
 import com.api.educaia.token.Token;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,6 +21,7 @@ import javax.persistence.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@With
 @Entity
 @Table(name = "tb_user")
 public class UserModel implements UserDetails, Serializable {
@@ -96,4 +94,9 @@ public class UserModel implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
+
+
+
+
+
 }

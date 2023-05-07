@@ -1,6 +1,7 @@
 package com.api.educaia.services;
 
 import com.api.educaia.dtos.UserDTO;
+import com.api.educaia.dtos.UserPublicDTO;
 import com.api.educaia.models.UserModel;
 import com.api.educaia.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -76,6 +78,16 @@ public class UserServiceImpl implements  UserService{
     public List<UserModel> getUsersRankOverall() {
         Pageable top23Users = PageRequest.of(0, 23);
         return userRepository.getUsersRankOverall(top23Users);
+    }
+
+    @Override
+    public List<UserPublicDTO> getUsersPublic(List<UserModel> users) {
+        List<UserPublicDTO> usersPublicDTO = new ArrayList<>();
+        for (UserModel user : users) {
+            UserPublicDTO userCopy = new UserPublicDTO(user.getNameComplete(), user.getPoints(),user.getSchoolId(), user.getProfileImagePath(), user.getMedalImagePath() );
+            usersPublicDTO.add(userCopy);
+        }
+        return usersPublicDTO;
     }
 
 
