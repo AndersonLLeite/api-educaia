@@ -33,4 +33,20 @@ public interface UserService {
     List<UserModel> getUsersRankOverall();
 
     List<UserPublicDTO> getUsersPublic(List<UserModel> users);
+
+    void addFollower(UserModel user, String followerUsername);
+
+    void removeFollower(UserModel user, String followerUsername);
+
+    List<UserModel> getFollowers(UserModel user);
+
+    List<UserModel> getFollowing(UserModel user);
+
+    void addFollowing(UserModel follower, String username);
+
+    void removeFollowing(UserModel follower, String username);
+
+    List<Boolean> getIsFollowing(UserModel user, List<String> usernames);
+
+    UserPublicDTO getUserPublic(UserModel user);
 }

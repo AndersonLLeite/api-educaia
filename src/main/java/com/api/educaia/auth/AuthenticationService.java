@@ -36,6 +36,7 @@ public class AuthenticationService {
             case "ROLE_PARENT" -> RoleName.ROLE_PARENT;
             default -> RoleName.ROLE_STUDENT;
         };
+
         var user = UserModel.builder()
                 .username(request.getUsername())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -44,6 +45,7 @@ public class AuthenticationService {
                 .schoolId(request.getSchoolId())
                 .classId(request.getClassId())
                 .build();
+
         var savedUser = repository.save(user);
         var jwtToken = jwtService.generateToken(user);
         var refreshToken = jwtService.generateRefreshToken(user);

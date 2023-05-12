@@ -31,6 +31,7 @@ public class UserModel implements UserDetails, Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    @Column(unique = true)
     private String username;
     @JsonIgnore
     private String password;
@@ -59,6 +60,10 @@ public class UserModel implements UserDetails, Serializable {
     @Enumerated(EnumType.STRING)
     private LevelsOfEducationEnum levelsOfEducation;
     private String childID;
+    @ElementCollection
+    private List<String> following;
+    @ElementCollection
+    private List<String> followers;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -96,7 +101,19 @@ public class UserModel implements UserDetails, Serializable {
     }
 
 
+    public void addFollower(String followerUsername) {
+        this.followers.add(followerUsername);
+    }
 
+    public void removeFollower(String followerUsername) {
+        this.followers.remove(followerUsername);
+    }
 
+    public void addFollowing(String username) {
+        this.following.add(username);
+    }
 
+    public void removeFollowing(String username) {
+        this.following.remove(username);
+    }
 }

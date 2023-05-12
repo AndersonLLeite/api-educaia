@@ -23,7 +23,7 @@ public interface UserRepository extends JpaRepository<UserModel, UUID> {
     @Query("SELECT COUNT(*) FROM UserModel u WHERE u.points >= :points AND u.schoolId = :schoolId")
     int getRankingByPointsAndSchoolId(@Param("points") int points, @Param("schoolId") String schoolId);
 
-    @Query("SELECT COUNT(*) FROM UserModel u WHERE u.points >= :points")
+    @Query("SELECT COUNT(*) FROM UserModel u WHERE u.points > :points ")
     int getRankingOverAll(@Param("points") int points);
 
     @Query("SELECT u FROM UserModel u WHERE u.classId = :classId ORDER BY u.points DESC")
@@ -34,4 +34,8 @@ public interface UserRepository extends JpaRepository<UserModel, UUID> {
 
     @Query("SELECT u FROM UserModel u ORDER BY u.points DESC")
     List<UserModel> getUsersRankOverall(Pageable pageable);
+
+
+    @Query("SELECT u FROM UserModel u WHERE u.username IN :followers")
+    List<UserModel> findByUsernameIn(List<String> followers);
 }

@@ -7,6 +7,7 @@ import com.api.educaia.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -59,18 +60,19 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public int getMyRankingOverAll(int points) {
+
         return userRepository.getRankingOverAll(points);
     }
 
     @Override
     public List<UserModel> getUsersRankByClassId(String classId) {
-        Pageable top23Users = PageRequest.of(0, 23);
+        Pageable top23Users = PageRequest.of(0, 30);
         return userRepository.getUsersRankByClassId(classId, top23Users);
     }
 
     @Override
     public List<UserModel> getUsersRankBySchoolId(String schoolId) {
-        Pageable top23Users = PageRequest.of(0, 23);
+        Pageable top23Users = PageRequest.of(0, 30);
         return userRepository.getUsersRankBySchoolId(schoolId, top23Users);
     }
 
@@ -84,10 +86,69 @@ public class UserServiceImpl implements  UserService{
     public List<UserPublicDTO> getUsersPublic(List<UserModel> users) {
         List<UserPublicDTO> usersPublicDTO = new ArrayList<>();
         for (UserModel user : users) {
-            UserPublicDTO userCopy = new UserPublicDTO(user.getNameComplete(), user.getPoints(),user.getSchoolId(), user.getProfileImagePath(), user.getMedalImagePath() );
+            UserPublicDTO userCopy = new UserPublicDTO( user.getUsername(), user.getNameComplete(), user.getPoints(),user.getSchoolId(), user.getProfileImagePath(), user.getMedalImagePath(), user.getFollowers(), user.getFollowing() );
             usersPublicDTO.add(userCopy);
         }
         return usersPublicDTO;
+    }
+
+    @Override
+    public void addFollower(UserModel user, String followerUsername) {
+        if (user.getFollowers().contains(followerUsername)) {
+            return;
+        }
+        user.addFollower(followerUsername);
+        userRepository.save(user);
+    }
+
+    @Override
+    public void removeFollower(UserModel user, String followerUsername) {
+        user.removeFollower(followerUsername);
+        userRepository.save(user);
+    }
+
+    @Override
+    public List<UserModel> getFollowers(UserModel user) {
+        List<UserModel> followers = userRepository.findByUsernameIn(user.getFollowers());
+        return followers;
+    }
+
+    @Override
+    public List<UserModel> getFollowing(UserModel user) {
+        List<UserModel> following = userRepository.findByUsernameIn(user.getFollowing());
+        return following;
+    }
+
+
+
+    @Override
+    public void addFollowing(UserModel follower, String username) {
+        if (follower.getFollowing().contains(username)) {
+            return;
+        }
+        follower.addFollowing(username);
+        userRepository.save(follower);
+    }
+
+    @Override
+    public void removeFollowing(UserModel follower, String username) {
+        follower.removeFollowing(username);
+        userRepository.save(follower);
+
+    }
+
+    @Override
+    public List<Boolean> getIsFollowing(UserModel user, List<String> usernames) {
+        List<Boolean> isFollowing = new ArrayList<>();
+        for (String username : usernames) {
+            isFollowing.add(user.getFollowing().contains(username));
+        }
+        return isFollowing;
+    }
+
+    @Override
+    public UserPublicDTO getUserPublic(UserModel user) {
+        return new UserPublicDTO(user.getUsername(), user.getNameComplete(), user.getPoints(), user.getSchoolId(), user.getProfileImagePath(), user.getMedalImagePath(), user.getFollowers(), user.getFollowing());
     }
 
 
