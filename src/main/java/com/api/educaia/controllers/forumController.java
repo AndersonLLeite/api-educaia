@@ -1,0 +1,80 @@
+package com.api.educaia.controllers;
+
+import com.api.educaia.dtos.ClassDTO;
+import com.api.educaia.dtos.TopicAnswerDTO;
+import com.api.educaia.dtos.TopicDTO;
+import com.api.educaia.models.TopicAnswer;
+import com.api.educaia.models.TopicModel;
+import com.api.educaia.services.TopicService;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
+import java.util.UUID;
+
+@RestController
+@CrossOrigin(origins = "*", maxAge = 3600)
+@RequestMapping("/api/forum")
+public class forumController {
+    @Autowired
+    TopicService topicService;
+
+    @PostMapping("/create-topic")
+    public ResponseEntity<?> createTopic(@RequestBody @Valid TopicDTO topicDTO){
+        var topicModel = new TopicModel();
+        BeanUtils.copyProperties(topicDTO, topicModel);
+        TopicModel topicModelResponse = topicService.createTopic(topicModel);
+        return ResponseEntity.ok(topicModelResponse);
+    }
+
+    @GetMapping("/list-topics")
+    public ResponseEntity<?> listTopics(){
+        return ResponseEntity.ok(topicService.listTopics());
+    }
+
+    @GetMapping("/get-recent-topics")
+    public ResponseEntity<?> getRecentTopics(){
+        return ResponseEntity.ok(topicService.getRecentTopics());
+    }
+    @GetMapping("/get-popular-topics")
+    public ResponseEntity<?> getPopularTopics(){
+        return ResponseEntity.ok(topicService.getPopularTopics());
+    }
+    @DeleteMapping("/remove-topic/{topicId}")
+    public ResponseEntity<?> removeTopic(@PathVariable UUID topicId){
+        topicService.removeTopic(topicId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/add-answer/{topicId}")
+    public ResponseEntity<?> addAnswer(@PathVariable UUID topicId, @RequestBody @Valid TopicAnswerDTO topicAnswerDTO){
+        TopicAnswer topicAnswer = new TopicAnswer();
+        BeanUtils.copyProperties(topicAnswerDTO, topicAnswer);
+        topicAnswer.setTopicId(topicId);
+        return ResponseEntity.ok(topicService.addAnswer(topicAnswer, topicId));
+    }
+    //TODO: para testes
+    @GetMapping("/list-answers")
+    public ResponseEntity<?> listAnswers(){
+        return ResponseEntity.ok(topicService.listAnswers());
+    }
+
+    @PostMapping("/add-favorite/{topicId}/{username}")
+    public ResponseEntity<?> addFavorite(@PathVariable UUID topicId, @PathVariable String username){
+        topicService.addFavorite(topicId, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/remove-favorite/{topicId}/{username}")
+    public ResponseEntity<?> removeFavorite(@PathVariable UUID topicId, @PathVariable String username){
+        topicService.removeFavorite(topicId, username);
+        return ResponseEntity.ok().build();
+    }
+
+
+
+
+
+}
