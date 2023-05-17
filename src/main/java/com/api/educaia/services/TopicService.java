@@ -26,4 +26,14 @@ public interface TopicService {
     void addFavorite(UUID topicId, String username);
 
     void removeFavorite(UUID topicId, String username);
+
+    List<TopicModel> getTopicByCategory(String category);
+
+    void addLike(UUID topicId, String username);
+
+    void removeLike(UUID topicId, String username);
+
+    void openTopic(UUID topicId);
+
+    void closeTopic(UUID topicId);
 }

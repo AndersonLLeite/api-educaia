@@ -1,6 +1,5 @@
 package com.api.educaia.controllers;
 
-import com.api.educaia.dtos.ClassDTO;
 import com.api.educaia.dtos.TopicAnswerDTO;
 import com.api.educaia.dtos.TopicDTO;
 import com.api.educaia.models.TopicAnswer;
@@ -42,6 +41,12 @@ public class forumController {
     public ResponseEntity<?> getPopularTopics(){
         return ResponseEntity.ok(topicService.getPopularTopics());
     }
+
+    @GetMapping("/get-topics-by-category")
+    public ResponseEntity<?> getTopicByCategory(@RequestParam("category") String category){
+        return ResponseEntity.ok(topicService.getTopicByCategory(category));
+    }
+
     @DeleteMapping("/remove-topic/{topicId}")
     public ResponseEntity<?> removeTopic(@PathVariable UUID topicId){
         topicService.removeTopic(topicId);
@@ -72,6 +77,32 @@ public class forumController {
         topicService.removeFavorite(topicId, username);
         return ResponseEntity.ok().build();
     }
+
+    @PostMapping("/add-like/{topicId}/{username}")
+    public ResponseEntity<?> addLike(@PathVariable UUID topicId, @PathVariable String username){
+        topicService.addLike(topicId, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/remove-like/{topicId}/{username}")
+    public ResponseEntity<?> removeLike(@PathVariable UUID topicId, @PathVariable String username){
+        topicService.removeLike(topicId, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/open-topic/{topicId}")
+    public ResponseEntity<?> openTopic(@PathVariable UUID topicId){
+        topicService.openTopic(topicId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/close-topic/{topicId}")
+    public ResponseEntity<?> closeTopic(@PathVariable UUID topicId){
+        topicService.closeTopic(topicId);
+        return ResponseEntity.ok().build();
+    }
+
+
 
 
 

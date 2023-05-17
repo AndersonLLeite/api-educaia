@@ -52,9 +52,9 @@ public class TopicServiceImpl implements TopicService{
     //TODO: Implement this method
     @Override
     public List<TopicModel> getPopularTopics() {
-        Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "answers"));
+        Pageable top3FavoriteTopic = PageRequest.of(0, 3);
 
-        return topicRepository.findAll(pageable).getContent();
+        return topicRepository.findTop3TopicsByFavorites(top3FavoriteTopic);
     }
 
     @Override
@@ -76,6 +76,55 @@ public class TopicServiceImpl implements TopicService{
         }
         TopicModel topic = topicOp.get();
         topic.removeUserWhoFavorite(username);
+        topicRepository.save(topic);
+    }
+
+    @Override
+    public List<TopicModel> getTopicByCategory(String category) {
+        return topicRepository.findByCategory(category);
+    }
+
+    @Override
+    public void addLike(UUID topicId, String username) {
+        Optional<TopicModel> topicOp = topicRepository.findById(topicId);
+        if (!topicOp.isPresent()) {
+            return;
+        }
+        TopicModel topic = topicOp.get();
+        topic.addUserWhoLiked(username);
+        topicRepository.save(topic);
+    }
+
+    @Override
+    public void removeLike(UUID topicId, String username) {
+        Optional<TopicModel> topicOp = topicRepository.findById(topicId);
+        if (!topicOp.isPresent()) {
+            return;
+        }
+        TopicModel topic = topicOp.get();
+        topic.removeUserWhoLiked(username);
+        topicRepository.save(topic);
+    }
+
+    @Override
+    public void openTopic(UUID topicId) {
+        Optional<TopicModel> topicOp = topicRepository.findById(topicId);
+        if (!topicOp.isPresent()) {
+            return;
+        }
+        TopicModel topic = topicOp.get();
+        topic.setOpen(true);
+        topicRepository.save(topic);
+    }
+
+    @Override
+    public void closeTopic(UUID topicId) {
+        Optional<TopicModel> topicOp = topicRepository.findById(topicId);
+        if (!topicOp.isPresent()) {
+            return;
+        }
+        TopicModel topic = topicOp.get();
+        topic.setOpen(false);
         topicRepository.save(topic);
     }
 

@@ -54,4 +54,14 @@ public class TopicModel implements Serializable {
     public void removeUserWhoFavorite(String username) {
             this.usernamesWhoFavorite.remove(username);
     }
+
+    public void addUserWhoLiked(String username) {
+        if (!this.usernamesWhoLiked.contains(username)) {
+            this.usernamesWhoLiked.add(username);
+        }
+    }
+
+    public void removeUserWhoLiked(String username) {
+        this.usernamesWhoLiked.remove(username);
+    }
 }
