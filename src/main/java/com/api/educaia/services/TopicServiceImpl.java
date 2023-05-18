@@ -129,8 +129,62 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public void removeTopic(UUID topicId) {
-        topicRepository.deleteById(topicId);
+    public void removeLikeToAnswer(UUID answerId, String username) {
+        Optional<TopicAnswer> answerOp = topicAnswerRepository.findById(answerId);
+        if (!answerOp.isPresent()) {
+            return;
+        }
+        TopicAnswer answer = answerOp.get();
+        answer.removeUserWhoLiked(username);
+        topicAnswerRepository.save(answer);
+    }
+
+    @Override
+    public void addLikeToAnswer(UUID answerId, String username) {
+        Optional<TopicAnswer> answerOp = topicAnswerRepository.findById(answerId);
+        if (!answerOp.isPresent()) {
+            return;
+        }
+        TopicAnswer answer = answerOp.get();
+        answer.addUserWhoLiked(username);
+        topicAnswerRepository.save(answer);
+
+    }
+
+    @Override
+    public void removeAnswer(UUID answerId) {
+        Optional<TopicAnswer> answerOp = topicAnswerRepository.findById(answerId);
+        if (!answerOp.isPresent()) {
+            return;
+        }
+        TopicAnswer answer = answerOp.get();
+        topicAnswerRepository.delete(answer);
+    }
+
+    @Override
+    public void setBestAnswer(UUID answerId, UUID topicId) {
+        Optional<TopicAnswer> answerOp = topicAnswerRepository.findById(answerId);
+        if (!answerOp.isPresent()) {
+            return;
+        }
+        TopicAnswer answer = answerOp.get();
+        Optional<TopicModel> topicOp = topicRepository.findById(topicId);
+        if (!topicOp.isPresent()) {
+            return;
+        }
+        TopicModel topic = topicOp.get();
+        topic.setBestAnswer(answer);
+        topicRepository.save(topic);
+    }
+
+    @Override
+    public void  removeTopic(UUID topicId) {
+        Optional<TopicModel> topicModel = topicRepository.findById(topicId);
+        if(!topicModel.isPresent()){
+            return;
+        }
+        TopicModel topic = topicModel.get();
+        topicRepository.delete(topic);
     }
 
     @Override
@@ -150,6 +204,8 @@ public class TopicServiceImpl implements TopicService{
         topicRepository.save(topic);
         return topicAnswerRepository.save(topicAnswer) ;
     }
+
+
 
     @Override
     public List<TopicAnswer> listAnswers() {

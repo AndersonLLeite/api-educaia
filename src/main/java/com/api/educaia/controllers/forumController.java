@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -49,6 +50,7 @@ public class forumController {
 
     @DeleteMapping("/remove-topic/{topicId}")
     public ResponseEntity<?> removeTopic(@PathVariable UUID topicId){
+
         topicService.removeTopic(topicId);
         return ResponseEntity.ok().build();
     }
@@ -99,6 +101,30 @@ public class forumController {
     @PostMapping("/close-topic/{topicId}")
     public ResponseEntity<?> closeTopic(@PathVariable UUID topicId){
         topicService.closeTopic(topicId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/remove-like-to-answer/{answerId}/{username}")
+    public ResponseEntity<?> removeLikeToAnswer(@PathVariable UUID answerId, @PathVariable String username){
+        topicService.removeLikeToAnswer(answerId, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/add-like-to-answer/{answerId}/{username}")
+    public ResponseEntity<?> addLikeToAnswer(@PathVariable UUID answerId, @PathVariable String username){
+        topicService.addLikeToAnswer(answerId, username);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/remove-answer/{answerId}")
+    public ResponseEntity<?> removeAnswer(@PathVariable UUID answerId){
+        topicService.removeAnswer(answerId);
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/set-best-answer/{answerId}/{topicId}")
+    public ResponseEntity<?> setBestAnswer(@PathVariable UUID answerId, @PathVariable UUID topicId){
+        topicService.setBestAnswer(answerId, topicId);
         return ResponseEntity.ok().build();
     }
 

@@ -31,4 +31,14 @@ public class TopicAnswer implements Serializable {
     private UserModel userWhoAnswered;
     @ElementCollection
     private List<String> usernamesWhoLiked = new ArrayList<>();
+
+    public void removeUserWhoLiked(String username) {
+        this.usernamesWhoLiked.remove(username);
+    }
+
+    public void addUserWhoLiked(String username) {
+        if (!this.usernamesWhoLiked.contains(username)) {
+            this.usernamesWhoLiked.add(username);
+        }
+    }
 }

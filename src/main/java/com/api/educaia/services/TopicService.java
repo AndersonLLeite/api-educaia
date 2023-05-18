@@ -35,5 +35,13 @@ public interface TopicService {
 
     void openTopic(UUID topicId);
 
-    void closeTopic(UUID topicId);
+    void closeTopic(java.util.UUID topicId);
+
+    void removeLikeToAnswer(UUID answerId, String username);
+
+    void addLikeToAnswer(UUID answerId, String username);
+
+    void removeAnswer(UUID answerId);
+
+    void setBestAnswer(UUID answerId, UUID topicId);
 }
