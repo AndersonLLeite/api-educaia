@@ -18,4 +18,5 @@ public class UserPublicDTO {
     private List<String> medalImagePath;
     private List<String> followers;
     private List<String> following;
+    private int forumPoints;
 }

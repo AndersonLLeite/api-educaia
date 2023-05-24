@@ -5,12 +5,14 @@ import com.api.educaia.dtos.TopicDTO;
 import com.api.educaia.models.TopicAnswer;
 import com.api.educaia.models.TopicModel;
 import com.api.educaia.services.TopicService;
+import com.api.educaia.services.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -20,6 +22,9 @@ import java.util.UUID;
 public class forumController {
     @Autowired
     TopicService topicService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/create-topic")
     public ResponseEntity<?> createTopic(@RequestBody @Valid TopicDTO topicDTO){
@@ -127,6 +132,13 @@ public class forumController {
         topicService.setBestAnswer(answerId, topicId);
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/get-users-rank-forum")
+    public ResponseEntity<?> getUsersRankForum(){
+        return ResponseEntity.ok(userService.getUsersRankForum());
+    }
+
+
 
 
 

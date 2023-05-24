@@ -64,6 +64,7 @@ public class UserModel implements UserDetails, Serializable {
     private List<String> following;
     @ElementCollection
     private List<String> followers;
+    private int forumPoints = 0;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -99,7 +100,6 @@ public class UserModel implements UserDetails, Serializable {
     public boolean isEnabled() {
         return true;
     }
-
 
     public void addFollower(String followerUsername) {
         this.followers.add(followerUsername);

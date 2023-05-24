@@ -41,6 +41,7 @@ public class TopicModel implements Serializable {
     @ElementCollection
     private List<String> usernamesWhoFavorite = new ArrayList<>();
 
+
     public void addAnswer(TopicAnswer topicAnswer) {
         this.answers.add(topicAnswer);
     }

@@ -6,14 +6,18 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 import java.util.List;
-
+import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ClassDTO {
+public class SubjectDTO {
+    private UUID id;
     @NotBlank
     private String name;
     @NotBlank
     private String schoolId;
-    private List<SubjectDTO> subjects;
+    @NotBlank
+    private String classId;
+
+
 }

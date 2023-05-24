@@ -86,7 +86,7 @@ public class UserServiceImpl implements  UserService{
     public List<UserPublicDTO> getUsersPublic(List<UserModel> users) {
         List<UserPublicDTO> usersPublicDTO = new ArrayList<>();
         for (UserModel user : users) {
-            UserPublicDTO userCopy = new UserPublicDTO( user.getUsername(), user.getNameComplete(), user.getPoints(),user.getSchoolId(), user.getProfileImagePath(), user.getMedalImagePath(), user.getFollowers(), user.getFollowing() );
+            UserPublicDTO userCopy = new UserPublicDTO( user.getUsername(), user.getNameComplete(), user.getPoints(),user.getSchoolId(), user.getProfileImagePath(), user.getMedalImagePath(), user.getFollowers(), user.getFollowing(), user.getForumPoints() );
             usersPublicDTO.add(userCopy);
         }
         return usersPublicDTO;
@@ -148,8 +148,13 @@ public class UserServiceImpl implements  UserService{
 
     @Override
     public UserPublicDTO getUserPublic(UserModel user) {
-        return new UserPublicDTO(user.getUsername(), user.getNameComplete(), user.getPoints(), user.getSchoolId(), user.getProfileImagePath(), user.getMedalImagePath(), user.getFollowers(), user.getFollowing());
+        return new UserPublicDTO(user.getUsername(), user.getNameComplete(), user.getPoints(), user.getSchoolId(), user.getProfileImagePath(), user.getMedalImagePath(), user.getFollowers(), user.getFollowing(), user.getForumPoints());
     }
 
-
+    @Override
+    public List<UserPublicDTO> getUsersRankForum() {
+        Pageable top20UsersForum = PageRequest.of(0, 20);
+        List<UserModel> usersRankForum = userRepository.getUsersRankForum(top20UsersForum);
+        return getUsersPublic(usersRankForum);
+    }
 }

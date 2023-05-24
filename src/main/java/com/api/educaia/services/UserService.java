@@ -49,4 +49,6 @@ public interface UserService {
     List<Boolean> getIsFollowing(UserModel user, List<String> usernames);
 
     UserPublicDTO getUserPublic(UserModel user);
+
+    List<UserPublicDTO> getUsersRankForum();
 }

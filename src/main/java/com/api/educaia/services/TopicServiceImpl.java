@@ -1,6 +1,7 @@
 package com.api.educaia.services;
 
 import com.api.educaia.dtos.TopicDTO;
+import com.api.educaia.dtos.UserPublicDTO;
 import com.api.educaia.models.TopicAnswer;
 import com.api.educaia.models.TopicModel;
 import com.api.educaia.models.UserModel;
@@ -176,6 +177,9 @@ public class TopicServiceImpl implements TopicService{
         topic.setBestAnswer(answer);
         topicRepository.save(topic);
     }
+
+
+
 
     @Override
     public void  removeTopic(UUID topicId) {

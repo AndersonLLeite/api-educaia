@@ -17,4 +17,5 @@ public interface TopicRepository extends JpaRepository<TopicModel, UUID> {
     List<TopicModel> findTop3TopicsByFavorites(Pageable pageable);
 
     List<TopicModel> findByCategory(String category);
+
 }

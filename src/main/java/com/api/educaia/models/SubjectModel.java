@@ -1,8 +1,7 @@
 package com.api.educaia.models;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,14 +11,12 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.UUID;
 
+@Entity
 @Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table(name = "tb_class")
-public class ClassModel implements Serializable {
-
+@Table(name = "subject")
+public class SubjectModel implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
     @Id
@@ -27,7 +24,13 @@ public class ClassModel implements Serializable {
     private UUID id;
     private String name;
     private String schoolId;
-    @OneToMany(cascade = CascadeType.ALL)
-    private List<SubjectModel> subjects;
+    private String classId;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<GradeModel> grades;
+
+
+    public void add(GradeModel gradeModel) {
+        this.grades.add(gradeModel);
+    }
 }
