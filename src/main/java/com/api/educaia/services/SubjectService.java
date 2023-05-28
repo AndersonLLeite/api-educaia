@@ -1,6 +1,7 @@
 package com.api.educaia.services;
 
 import com.api.educaia.dtos.SubjectDTO;
+import com.api.educaia.dtos.SubjectIdentifierDTO;
 import com.api.educaia.models.GradeModel;
 import com.api.educaia.models.SubjectModel;
 
@@ -12,9 +13,13 @@ public interface SubjectService {
 
     List<SubjectModel> listSubjects();
 
-    List<SubjectModel> getSubjectsByClassId(UUID classId);
+    List<SubjectModel> getSubjectsByClassId(String classId);
 
     SubjectModel getSubjectBySubjectId(UUID subjectId);
 
     void addGradeToSubject(SubjectModel subjectModel, GradeModel gradeModel);
+
+    List<SubjectIdentifierDTO> getSubjectsIdentifierBySubjectsModel(List<SubjectModel> subjectModels);
+
+    void deleteSubjectBySubjectId(UUID subjectId);
 }

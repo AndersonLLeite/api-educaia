@@ -9,5 +9,5 @@ import java.util.UUID;
 
 @Repository
 public interface SubjectRepository extends JpaRepository<SubjectModel, UUID> {
-    List<SubjectModel> findByClassId(UUID classId);
+    List<SubjectModel> findByClassId(String classId);
 }

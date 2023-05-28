@@ -9,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +30,17 @@ public class GradeServiceImpl implements GradeService{
         return gradeRepository.findAll();
     }
 
+    @Override
+    public List<GradeDTO> getGradesDTOByGradesModel(List<GradeModel> grades) {
+        List<GradeDTO> gradesDTO = new ArrayList<>();
+        for ( GradeModel gradeModel: grades
+             ) {
+            GradeDTO gradeDTO = new GradeDTO(gradeModel.getName(), gradeModel.getUserId(), gradeModel.getGrade(), gradeModel.getStatus());
+            gradesDTO.add(gradeDTO);
 
+        }
+        return gradesDTO;
+    }
 
 
 }

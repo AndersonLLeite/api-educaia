@@ -12,4 +12,5 @@ public interface GradeService {
 
     List<GradeModel> listGrades();
 
+    List<GradeDTO> getGradesDTOByGradesModel(List<GradeModel> grades);
 }

@@ -38,8 +38,21 @@ public class ClassController {
 
     @PostMapping("/create-subject-by-classId/{classId}")
     public ResponseEntity<?> createSubject(@PathVariable UUID classId, @RequestBody SubjectDTO subjectDTO){
+
+
         try {
             classService.createSubject(subjectDTO, classId);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/delete-class/{classId}")
+    public ResponseEntity<?> deleteClass(@PathVariable UUID classId){
+        try {
+            classService.deleteClass(classId);
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());

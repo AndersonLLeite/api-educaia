@@ -30,4 +30,11 @@ public class ClassModel implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     private List<SubjectModel> subjects;
 
+    public void removeSubject(UUID subjectId) {
+        this.subjects.removeIf(subjectModel -> subjectModel.getId().equals(subjectId));
+    }
+
+    public void addSubject(SubjectModel subjectModel) {
+        this.subjects.add(subjectModel);
+    }
 }

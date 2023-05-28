@@ -1,5 +1,7 @@
 package com.api.educaia.dtos;
 
+import com.api.educaia.models.GradeModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,6 +13,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SubjectDTO {
+    @JsonIgnore
     private UUID id;
     @NotBlank
     private String name;
@@ -19,5 +22,5 @@ public class SubjectDTO {
     @NotBlank
     private String classId;
 
-
+    private List<GradeDTO> grades;
 }

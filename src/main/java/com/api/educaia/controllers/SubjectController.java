@@ -2,8 +2,11 @@ package com.api.educaia.controllers;
 
 import com.api.educaia.dtos.GradeDTO;
 import com.api.educaia.dtos.SubjectDTO;
+import com.api.educaia.dtos.SubjectIdentifierDTO;
+import com.api.educaia.models.ClassModel;
 import com.api.educaia.models.GradeModel;
 import com.api.educaia.models.SubjectModel;
+import com.api.educaia.services.ClassService;
 import com.api.educaia.services.GradeService;
 import com.api.educaia.services.SubjectService;
 import org.springframework.beans.BeanUtils;
@@ -11,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -23,6 +28,9 @@ public class SubjectController {
 
     @Autowired
     private SubjectService subjectService;
+
+    @Autowired
+    private ClassService classService;
 
 @PostMapping("/create-subject-by-classID/{classId}")
     public ResponseEntity<?> createSubject(@PathVariable UUID classID, @RequestBody SubjectDTO subjectDTO){
@@ -56,8 +64,10 @@ public class SubjectController {
         return ResponseEntity.ok(gradeService.listGrades());
     }
 
-    @GetMapping("/subjects-by-classId/{classId}")
-    public ResponseEntity<?> getSubjectsByClassId(@PathVariable UUID classId){
+    @GetMapping("/get-subjects-identifier-by-classId/{classId}")
+    public ResponseEntity<?> getSubjectsByClassId(@PathVariable String classId){
+        List<SubjectModel> subjectModels = subjectService.getSubjectsByClassId(classId);
+        List<SubjectIdentifierDTO> subjectsIdentifierDTO = subjectService.getSubjectsIdentifierBySubjectsModel(subjectModels);
         return ResponseEntity.ok(subjectService.getSubjectsByClassId(classId));
     }
 
@@ -73,6 +83,47 @@ public class SubjectController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
+        return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/get-grades-by-subjectId/{subjectId}")
+    public ResponseEntity<?> getGradesBySubjectId(@PathVariable UUID subjectId){
+        try {
+            SubjectModel subjectModel = subjectService.getSubjectBySubjectId(subjectId);
+            return ResponseEntity.ok(subjectModel.getGrades());
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping("/get-subject-by-subjectId/{subjectId}")
+    public ResponseEntity<?> getSubjectBySubjectId(@PathVariable UUID subjectId){
+        try {
+            SubjectModel subjectModel = subjectService.getSubjectBySubjectId(subjectId);
+            List<GradeDTO> gradesDTO = gradeService.getGradesDTOByGradesModel(subjectModel.getGrades());
+            SubjectDTO subjectDTO = new SubjectDTO(subjectModel.getId(), subjectModel.getName(), subjectModel.getSchoolId(), subjectModel.getClassId(), gradesDTO);
+            return ResponseEntity.ok(subjectDTO);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete-subject-by-subjectId-and-classId/{subjectId}/{classId}")
+    public ResponseEntity<?> deleteSubjectBySubjectId(@PathVariable UUID subjectId, @PathVariable UUID classId){
+        Optional<ClassModel> classModelOp = classService.getClassByClassId(classId);
+        if(!classModelOp.isPresent()){
+            return ResponseEntity.badRequest().body("Class not found");
+        }
+        ClassModel classModel = classModelOp.get();
+        try {
+            classService.deleteSubjectFromSubjectsList(classModel, subjectId);
+            subjectService.deleteSubjectBySubjectId(subjectId);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
         return ResponseEntity.ok().build();
     }
 

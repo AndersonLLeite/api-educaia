@@ -1,6 +1,7 @@
 package com.api.educaia.services;
 
 import com.api.educaia.dtos.SubjectDTO;
+import com.api.educaia.dtos.SubjectIdentifierDTO;
 import com.api.educaia.models.GradeModel;
 import com.api.educaia.models.SubjectModel;
 import com.api.educaia.repositories.SubjectRepository;
@@ -8,6 +9,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,7 +31,7 @@ public class SubjectServiceImpl implements  SubjectService{
     }
 
     @Override
-    public List<SubjectModel> getSubjectsByClassId(UUID classId) {
+    public List<SubjectModel> getSubjectsByClassId(String classId) {
         return subjectRepository.findByClassId(classId);
     }
 
@@ -42,5 +44,22 @@ public class SubjectServiceImpl implements  SubjectService{
     public void addGradeToSubject(SubjectModel subjectModel, GradeModel gradeModel) {
         subjectModel.add(gradeModel);
         subjectRepository.save(subjectModel);
+    }
+
+    @Override
+    public List<SubjectIdentifierDTO> getSubjectsIdentifierBySubjectsModel(List<SubjectModel> subjectModels) {
+        List<SubjectIdentifierDTO> subjectIdentifierDTOS = new ArrayList<>();
+        for (SubjectModel subjectModel: subjectModels
+             ) {
+            SubjectIdentifierDTO subjectIdentifierDTO = new SubjectIdentifierDTO();
+            BeanUtils.copyProperties(subjectModel, subjectIdentifierDTO);
+            subjectIdentifierDTOS.add(subjectIdentifierDTO);
+        }
+        return subjectIdentifierDTOS;
+    }
+
+    @Override
+    public void deleteSubjectBySubjectId(UUID subjectId) {
+        subjectRepository.deleteById(subjectId);
     }
 }
