@@ -20,7 +20,7 @@ public class CalendarController {
     private CalendarService calendarService;
 
     @PostMapping("/create-event")
-        public ResponseEntity<?> createClass(@RequestBody EventCalendarDTO eventCalendarDTO) {
+        public ResponseEntity<?> createEvent(@RequestBody EventCalendarDTO eventCalendarDTO) {
             var eventCalendarModel = new EventCalendarModel();
             BeanUtils.copyProperties(eventCalendarDTO, eventCalendarModel);
             calendarService.createEvent(eventCalendarModel);

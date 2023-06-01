@@ -1,6 +1,5 @@
 package com.api.educaia.dtos;
 
-import com.api.educaia.models.EventCalendarModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,12 +11,13 @@ import java.util.UUID;
 @NoArgsConstructor
 public class EventCalendarDTO {
     private UUID id;
-    private String eventName;
-    private Long initialDateAndHour;
-    private Long endDateAndHour;
+    private String subject;
+    private Long startTime;
+    private Long endTime;
     private int backgroundColor;
     private boolean allDay;
-    private boolean recurringWeekly;
+    private String recurrenceRule;
+    private List<Long> recurrenceExceptionDates;
     private String schoolId;
     private String classId;
     private String userId;

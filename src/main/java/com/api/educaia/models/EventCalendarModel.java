@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,12 +21,14 @@ public class EventCalendarModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String eventName;
-    private Long initialDateAndHour;
-    private Long endDateAndHour;
+    private String subject;
+    private Long startTime;
+    private Long endTime;
     private int backgroundColor;
     private boolean allDay;
-    private boolean recurringWeekly;
+    private String recurrenceRule;
+    @ElementCollection
+    private List<Long> recurrenceExceptionDates;
     private String schoolId;
     private String classId;
     private String userId;
