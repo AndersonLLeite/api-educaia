@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -58,6 +60,17 @@ public ResponseEntity<?> deleteEvent(@PathVariable("eventId") UUID eventId) {
     @GetMapping("/get-events-class/{classId}")
     public ResponseEntity<?> getEventsByClassId(@PathVariable("classId") String classId) {
         return new ResponseEntity<>(calendarService.getEventsByClassId(classId), HttpStatus.OK);
+    }
+
+    @PutMapping("/update-event-recurrent-add-exception-date/{eventId}")
+    public ResponseEntity<?> updateEventRecurrentAddExceptionDate(@PathVariable("eventId") UUID eventId, @RequestBody Map<String, Long> requestPayload) {
+        Optional<EventCalendarModel> eventCalendarOp = calendarService.getEventByEventId(eventId);
+        if (!eventCalendarOp.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        EventCalendarModel eventCalendarModel= eventCalendarOp.get();
+        calendarService.updateEventRecurrentAddExceptionDate(eventCalendarModel, requestPayload.get("exceptionDate"));
+        return ResponseEntity.ok().build();
     }
 
 

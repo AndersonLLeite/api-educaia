@@ -3,6 +3,7 @@ package com.api.educaia.services;
 import com.api.educaia.models.EventCalendarModel;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CalendarService {
@@ -21,4 +22,8 @@ public interface CalendarService {
     List<EventCalendarModel> getEventsByClassId(String classId);
 
     List<EventCalendarModel> getEventsTeacher(String userId, String schoolId);
+
+    Optional<EventCalendarModel> getEventByEventId(UUID eventId);
+
+    void updateEventRecurrentAddExceptionDate(EventCalendarModel eventCalendarModel, Long exceptionDate);
 }

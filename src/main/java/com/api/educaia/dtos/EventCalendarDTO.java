@@ -14,7 +14,7 @@ public class EventCalendarDTO {
     private String subject;
     private Long startTime;
     private Long endTime;
-    private int backgroundColor;
+    private int color;
     private boolean allDay;
     private String recurrenceRule;
     private List<Long> recurrenceExceptionDates;

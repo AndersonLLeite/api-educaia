@@ -59,5 +59,16 @@ public class CalendarServiceImpl implements CalendarService{
         return userEvents;
     }
 
+    @Override
+    public Optional<EventCalendarModel> getEventByEventId(UUID eventId) {
+        return calendarRepository.findById(eventId);
+    }
+
+    @Override
+    public void updateEventRecurrentAddExceptionDate(EventCalendarModel eventCalendarModel, Long exceptionDate) {
+        eventCalendarModel.addExceptionDate(exceptionDate);
+        calendarRepository.save(eventCalendarModel);
+    }
+
 
 }

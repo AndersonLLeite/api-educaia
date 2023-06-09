@@ -5,9 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 @Repository
 public interface CalendarRepository extends JpaRepository<EventCalendarModel, UUID> {
+    Optional<EventCalendarModel> findById(UUID eventId);
     List<EventCalendarModel> findAllBySchoolId(String schoolId);
 
     List<EventCalendarModel> findAllByClassId(String classId);

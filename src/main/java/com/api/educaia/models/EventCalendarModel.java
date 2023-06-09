@@ -24,7 +24,7 @@ public class EventCalendarModel implements Serializable {
     private String subject;
     private Long startTime;
     private Long endTime;
-    private int backgroundColor;
+    private int color;
     private boolean allDay;
     private String recurrenceRule;
     @ElementCollection
@@ -32,4 +32,8 @@ public class EventCalendarModel implements Serializable {
     private String schoolId;
     private String classId;
     private String userId;
+
+    public void addExceptionDate(Long exceptionDate) {
+        this.recurrenceExceptionDates.add(exceptionDate);
+    }
 }
