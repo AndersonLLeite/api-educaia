@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @GetMapping("/get-users-by-class-id/{classId}")
-    public ResponseEntity<?> getUsersByClassId(@PathVariable UUID classId) {
+    public ResponseEntity<?> getUsersByClassId(@PathVariable String classId) {
         List<UserModel> users = userService.getUsersByClassId(classId);
         return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
     }

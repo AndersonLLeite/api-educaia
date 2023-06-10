@@ -24,6 +24,7 @@ public class ClassServiceImpl implements ClassService{
         return classRepository.save(classModel);
     }
 
+    //TODO - apenas para testes
     @Override
     public List<ClassModel> listClasses() {
         return classRepository.findAll();
@@ -52,5 +53,10 @@ public class ClassServiceImpl implements ClassService{
     public void deleteSubjectFromSubjectsList(ClassModel classModel, UUID subjectId) {
         classModel.removeSubject(subjectId);
         classRepository.save(classModel);
+    }
+
+    @Override
+    public List<ClassModel> listClassesBySchoolId(String schoolId) {
+        return classRepository.findAllBySchoolId(schoolId);
     }
 }

@@ -16,7 +16,7 @@ import java.util.UUID;
 public interface UserRepository extends JpaRepository<UserModel, UUID> {
     Optional<UserModel> findByUsername(String username);
 
-    List<UserModel> findByClassId(UUID classId);
+    List<UserModel> findByClassId(String classId);
 
     @Query("SELECT COUNT(*) FROM UserModel u WHERE u.points >= :points AND u.classId = :classId")
     int getRankingByPointsAndClassId(@Param("points") int points, @Param("classId") String classId);

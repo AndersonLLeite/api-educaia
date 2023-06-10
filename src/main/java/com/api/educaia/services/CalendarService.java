@@ -1,5 +1,6 @@
 package com.api.educaia.services;
 
+import com.api.educaia.dtos.ClassHappeningRightNowDTO;
 import com.api.educaia.models.EventCalendarModel;
 
 import java.util.List;
@@ -26,4 +27,6 @@ public interface CalendarService {
     Optional<EventCalendarModel> getEventByEventId(UUID eventId);
 
     void updateEventRecurrentAddExceptionDate(EventCalendarModel eventCalendarModel, Long exceptionDate);
+
+    ClassHappeningRightNowDTO getClassHappeningRightNow(String classId);
 }

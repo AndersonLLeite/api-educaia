@@ -19,4 +19,6 @@ public interface ClassService {
     Optional<ClassModel> getClassByClassId(UUID classId);
 
     void deleteSubjectFromSubjectsList(ClassModel classModel, java.util.UUID subjectId);
+
+    List<ClassModel> listClassesBySchoolId(String schoolId);
 }

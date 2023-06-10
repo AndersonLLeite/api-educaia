@@ -2,6 +2,7 @@ package com.api.educaia.repositories;
 
 import com.api.educaia.models.EventCalendarModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -15,4 +16,10 @@ public interface CalendarRepository extends JpaRepository<EventCalendarModel, UU
     List<EventCalendarModel> findAllByClassId(String classId);
 
     List<EventCalendarModel> findAllByUserId(String userId);
+
+    @Query("SELECT e FROM EventCalendarModel e " +
+            "WHERE e.classId = :classId " +
+            "AND e.startTime < :currentTime " +
+            "AND e.endTime > :currentTime")
+    List<EventCalendarModel> findByClassIdAndTime(String classId, Long currentTime);
 }

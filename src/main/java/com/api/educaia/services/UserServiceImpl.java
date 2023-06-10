@@ -44,7 +44,7 @@ public class UserServiceImpl implements  UserService{
     }
 
     @Override
-    public List<UserModel> getUsersByClassId(UUID classId) {
+    public List<UserModel> getUsersByClassId(String classId) {
         return userRepository.findByClassId(classId);
     }
 

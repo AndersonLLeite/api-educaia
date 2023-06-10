@@ -18,7 +18,7 @@ public interface UserService {
 
     void addPointsToUser(UserModel user, int points);
 
-    List<UserModel> getUsersByClassId(UUID classId);
+    List<UserModel> getUsersByClassId(String classId);
 
     int getMyRankingByPointsAndClassId(int points, String classId);
 
