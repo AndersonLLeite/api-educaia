@@ -49,10 +49,9 @@ public class SubjectServiceImpl implements  SubjectService{
     @Override
     public List<SubjectIdentifierDTO> getSubjectsIdentifierBySubjectsModel(List<SubjectModel> subjectModels) {
         List<SubjectIdentifierDTO> subjectIdentifierDTOS = new ArrayList<>();
-        for (SubjectModel subjectModel: subjectModels
-             ) {
-            SubjectIdentifierDTO subjectIdentifierDTO = new SubjectIdentifierDTO();
-            BeanUtils.copyProperties(subjectModel, subjectIdentifierDTO);
+        for (SubjectModel subjectModel : subjectModels) {
+            SubjectIdentifierDTO subjectIdentifierDTO = new SubjectIdentifierDTO(subjectModel.getId() , subjectModel.getName());
+
             subjectIdentifierDTOS.add(subjectIdentifierDTO);
         }
         return subjectIdentifierDTOS;
@@ -62,4 +61,6 @@ public class SubjectServiceImpl implements  SubjectService{
     public void deleteSubjectBySubjectId(UUID subjectId) {
         subjectRepository.deleteById(subjectId);
     }
+
+
 }

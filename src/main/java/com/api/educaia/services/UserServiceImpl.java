@@ -1,6 +1,7 @@
 package com.api.educaia.services;
 
 import com.api.educaia.dtos.UserDTO;
+import com.api.educaia.dtos.UserIdentifierDTO;
 import com.api.educaia.dtos.UserPublicDTO;
 import com.api.educaia.models.UserModel;
 import com.api.educaia.repositories.UserRepository;
@@ -157,4 +158,20 @@ public class UserServiceImpl implements  UserService{
         List<UserModel> usersRankForum = userRepository.getUsersRankForum(top20UsersForum);
         return getUsersPublic(usersRankForum);
     }
+
+    @Override
+    public List<UserModel> getStudentsByClassId(String classId) {
+        return userRepository.findByClassId(classId);
+    }
+
+    @Override
+    public List<UserIdentifierDTO> getUsersIdentifier(List<UserModel> students) {
+        List<UserIdentifierDTO> usersIdentifier = new ArrayList<>();
+        for (UserModel student : students) {
+            usersIdentifier.add(new UserIdentifierDTO(student.getUsername(), student.getNameComplete(), student.getProfileImagePath()));
+        }
+        return usersIdentifier;
+    }
+
+
 }

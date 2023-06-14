@@ -37,4 +37,14 @@ public class ClassModel implements Serializable {
     public void addSubject(SubjectModel subjectModel) {
         this.subjects.add(subjectModel);
     }
+
+    public double getAvg() {
+        if (this.subjects.size() == 0) return 0;
+        double sum = 0;
+        for (SubjectModel subject : this.subjects) {
+            sum += subject.getAvg();
+        }
+
+        return sum / this.subjects.size();
+    }
 }

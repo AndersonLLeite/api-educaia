@@ -22,4 +22,5 @@ public interface SubjectService {
     List<SubjectIdentifierDTO> getSubjectsIdentifierBySubjectsModel(List<SubjectModel> subjectModels);
 
     void deleteSubjectBySubjectId(java.util.UUID subjectId);
+
 }

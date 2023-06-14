@@ -1,5 +1,7 @@
 package com.api.educaia.services;
 
+import com.api.educaia.dtos.AvgClassDTO;
+import com.api.educaia.dtos.AvgSubjectsDTO;
 import com.api.educaia.dtos.SubjectDTO;
 import com.api.educaia.models.ClassModel;
 import com.api.educaia.models.SubjectModel;
@@ -9,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -59,4 +62,34 @@ public class ClassServiceImpl implements ClassService{
     public List<ClassModel> listClassesBySchoolId(String schoolId) {
         return classRepository.findAllBySchoolId(schoolId);
     }
+
+    @Override
+    public Optional<ClassModel> getClassById(UUID classId) {
+        return classRepository.findById(classId);
+    }
+
+    @Override
+    public List<AvgSubjectsDTO> getListAvgSubjects(List<SubjectModel> subjects) {
+            List<AvgSubjectsDTO> avgSubjects = new ArrayList<>();
+            for (SubjectModel subject : subjects) {
+                double avg = subject.getAvg();
+                AvgSubjectsDTO avgSubject = new AvgSubjectsDTO(subject.getName(), avg);
+                avgSubjects.add(avgSubject);
+            }
+
+            return avgSubjects;
+        }
+
+    @Override
+    public List<AvgClassDTO> getListAvgClasses(List<ClassModel> classes) {
+        List<AvgClassDTO> avgClasses = new ArrayList<>();
+        for (ClassModel classModel : classes) {
+            double avg = classModel.getAvg();
+            AvgClassDTO avgClass = new AvgClassDTO(classModel.getName(), avg);
+            avgClasses.add(avgClass);
+        }
+
+        return avgClasses;
+    }
+
 }
