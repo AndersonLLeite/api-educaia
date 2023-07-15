@@ -18,6 +18,8 @@ public class SubjectServiceImpl implements  SubjectService{
     @Autowired
     private SubjectRepository subjectRepository;
 
+
+
     @Override
     public void createSubject(SubjectDTO subjectDTO) {
         SubjectModel subjectModel = new SubjectModel();
@@ -50,8 +52,7 @@ public class SubjectServiceImpl implements  SubjectService{
     public List<SubjectIdentifierDTO> getSubjectsIdentifierBySubjectsModel(List<SubjectModel> subjectModels) {
         List<SubjectIdentifierDTO> subjectIdentifierDTOS = new ArrayList<>();
         for (SubjectModel subjectModel : subjectModels) {
-            SubjectIdentifierDTO subjectIdentifierDTO = new SubjectIdentifierDTO(subjectModel.getId() , subjectModel.getName());
-
+            SubjectIdentifierDTO subjectIdentifierDTO = new SubjectIdentifierDTO(subjectModel.getId() , subjectModel.getName(), subjectModel.getTeacherName());
             subjectIdentifierDTOS.add(subjectIdentifierDTO);
         }
         return subjectIdentifierDTOS;

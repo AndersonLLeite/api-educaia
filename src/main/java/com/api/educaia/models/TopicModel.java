@@ -34,6 +34,7 @@ public class TopicModel implements Serializable {
     @OneToMany(cascade = CascadeType.ALL)
     private List<TopicAnswer> answers = new ArrayList<>();
     private boolean isOpen = true;
+    private boolean unauthorized = true;
     @OneToOne
     private TopicAnswer bestAnswer;
     @ElementCollection
@@ -64,5 +65,9 @@ public class TopicModel implements Serializable {
 
     public void removeUserWhoLiked(String username) {
         this.usernamesWhoLiked.remove(username);
+    }
+
+    public boolean getIsUnauthorized() {
+        return this.unauthorized;
     }
 }

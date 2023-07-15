@@ -15,15 +15,14 @@ public class ClassDTO {
     private String id;
     @NotBlank
     private String name;
-    @JsonIgnore
     @NotBlank
     private String schoolId;
     @JsonIgnore
     private List<SubjectDTO> subjects;
 
-    public ClassDTO(String id, String name) {
-        this.id = id;
+    public ClassDTO(String name, String schoolId) {
         this.name = name;
+        this.schoolId = schoolId;
     }
 }
 

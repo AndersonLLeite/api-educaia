@@ -8,11 +8,11 @@ import com.api.educaia.services.TopicService;
 import com.api.educaia.services.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -43,9 +43,27 @@ public class forumController {
     public ResponseEntity<?> getRecentTopics(){
         return ResponseEntity.ok(topicService.getRecentTopics());
     }
+
     @GetMapping("/get-popular-topics")
     public ResponseEntity<?> getPopularTopics(){
         return ResponseEntity.ok(topicService.getPopularTopics());
+    }
+    @GetMapping("/get-topic-by-topicId/{topicId}")
+    public ResponseEntity<?> getTopicById(@PathVariable UUID topicId){
+        Optional<TopicModel> topicOp = topicService.getTopicById(topicId);
+        if(!topicOp.isPresent())
+        {
+            return new ResponseEntity<String>("Topic not found", HttpStatus.NOT_FOUND);
+        }
+        TopicModel topic = topicOp.get();
+
+        return ResponseEntity.ok(topic);
+    }
+
+
+    @GetMapping("/get-unauthorized-topics")
+    public ResponseEntity<?> getUnauthorizedTopics(){
+        return ResponseEntity.ok(topicService.getUnauthorizedTopics());
     }
 
     @GetMapping("/get-topics-by-category")
@@ -138,6 +156,11 @@ public class forumController {
         return ResponseEntity.ok(userService.getUsersRankForum());
     }
 
+    @PutMapping("approve-topic/{topicId}")
+    public ResponseEntity<?> approveTopic(@PathVariable UUID topicId){
+        topicService.approveTopic(topicId);
+        return ResponseEntity.ok().build();
+    }
 
 
 

@@ -34,24 +34,26 @@ public class ClassController {
     private SubjectService subjectService;
 
     @RequestMapping(value = "/create-class", method = RequestMethod.POST)
-    public ResponseEntity<?> createClass(@RequestBody @Valid ClassDTO classDTO) {
+    public ResponseEntity<?> createClass(@RequestBody @Valid  ClassDTO classDTO) {
+        System.out.print(classDTO.getName());
+        System.out.print(classDTO.getSchoolId());
         var classModel = new ClassModel();
         BeanUtils.copyProperties(classDTO, classModel);
         ClassModel classModelResponse = classService.createClass(classModel);
 
-        return new ResponseEntity<ClassModel>(classModelResponse, HttpStatus.CREATED);
+        return new ResponseEntity<UUID>(classModelResponse.getId(), HttpStatus.CREATED);
     }
 
     @GetMapping("/list-classes-by-schoolId/{schoolId}")
     public ResponseEntity<?> listClassesBySchoolId(@PathVariable String schoolId) {
         List<ClassModel> classModels = classService.listClassesBySchoolId(schoolId);
-        List<ClassDTO> classDTOS = new ArrayList<>();
+        List<ClassIdentifierDTO> classIdentifierDTOS = new ArrayList<>();
         for (ClassModel classModel : classModels) {
-            ClassDTO classDTO = new ClassDTO(classModel.getId().toString(), classModel.getName());
+            ClassIdentifierDTO classIdentifierDTO = new ClassIdentifierDTO(classModel.getId(), classModel.getName());
 
-            classDTOS.add(classDTO);
+            classIdentifierDTOS.add(classIdentifierDTO);
         }
-        return ResponseEntity.ok(classDTOS);
+        return ResponseEntity.ok(classIdentifierDTOS);
     }
 
     @GetMapping("/list-classes")
@@ -128,8 +130,6 @@ public class ClassController {
     public ResponseEntity<?> getSubjectsIdentifierByClassId(@PathVariable String classId)
     {
         List<SubjectModel> subjects = subjectService.getSubjectsByClassId(classId);
-        System.out.print(subjects.get(0).getName());
-
         List<SubjectIdentifierDTO> subjectsIdentifier = subjectService.getSubjectsIdentifierBySubjectsModel(subjects);
         return ResponseEntity.ok(subjectsIdentifier);
     }

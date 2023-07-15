@@ -25,6 +25,7 @@ public class SubjectModel implements Serializable {
     private String name;
     private String schoolId;
     private String classId;
+    private String teacherName;
     @OneToMany(cascade = CascadeType.ALL)
     private List<GradeModel> grades;
 
