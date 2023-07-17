@@ -56,4 +56,6 @@ public interface UserService {
     List<UserModel> getStudentsByClassId(String classId);
 
     List<UserIdentifierDTO> getUsersIdentifier(List<UserModel> students);
+
+    List<UserModel> fetchTeachersByScoolId(String schoolId);
 }

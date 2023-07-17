@@ -3,6 +3,7 @@ package com.api.educaia.services;
 import com.api.educaia.dtos.UserDTO;
 import com.api.educaia.dtos.UserIdentifierDTO;
 import com.api.educaia.dtos.UserPublicDTO;
+import com.api.educaia.enums.RoleName;
 import com.api.educaia.models.UserModel;
 import com.api.educaia.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -165,12 +166,17 @@ public class UserServiceImpl implements  UserService{
     }
 
     @Override
-    public List<UserIdentifierDTO> getUsersIdentifier(List<UserModel> students) {
+    public List<UserIdentifierDTO> getUsersIdentifier(List<UserModel> users) {
         List<UserIdentifierDTO> usersIdentifier = new ArrayList<>();
-        for (UserModel student : students) {
-            usersIdentifier.add(new UserIdentifierDTO(student.getUsername(), student.getNameComplete(), student.getProfileImagePath()));
+        for (UserModel user : users) {
+            usersIdentifier.add(new UserIdentifierDTO(user.getId(), user.getNameComplete(), user.getProfileImagePath()));
         }
         return usersIdentifier;
+    }
+
+    @Override
+    public List<UserModel> fetchTeachersByScoolId(String schoolId) {
+        return userRepository.getBySchoolIdAndRole(schoolId, RoleName.ROLE_TEACHER);
     }
 
 

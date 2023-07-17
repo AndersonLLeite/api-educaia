@@ -21,6 +21,6 @@ public class SubjectDTO {
     private String schoolId;
     @NotBlank
     private String classId;
-
+    private String teacherName;
     private List<GradeDTO> grades;
 }

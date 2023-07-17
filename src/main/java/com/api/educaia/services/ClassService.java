@@ -14,14 +14,11 @@ public interface ClassService {
     ClassModel createClass(ClassModel classModel);
 
     List<ClassModel> listClasses();
-
-    void createSubject(SubjectDTO subjectDTO, UUID classID);
-
     void deleteClass(UUID classId);
 
     Optional<ClassModel> getClassByClassId(UUID classId);
 
-    void deleteSubjectFromSubjectsList(ClassModel classModel, java.util.UUID subjectId);
+    void deleteSubjectFromSubjectsList(ClassModel classModel, UUID subjectId);
 
     List<ClassModel> listClassesBySchoolId(String schoolId);
 
@@ -30,4 +27,6 @@ public interface ClassService {
     List<AvgSubjectsDTO> getListAvgSubjects(List<SubjectModel> subjects);
 
     List<AvgClassDTO> getListAvgClasses(List<ClassModel> classes);
+
+    UUID addSubjectToSubjectsList(ClassModel classModel, SubjectDTO subjectDTO);
 }

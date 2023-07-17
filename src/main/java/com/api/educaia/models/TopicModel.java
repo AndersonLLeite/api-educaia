@@ -31,7 +31,7 @@ public class TopicModel implements Serializable {
     private UserModel userWhoCreated;
     private String username;
     private Long creationDate;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TopicAnswer> answers = new ArrayList<>();
     private boolean isOpen = true;
     private boolean unauthorized = true;

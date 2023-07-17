@@ -33,14 +33,7 @@ public class ClassServiceImpl implements ClassService{
         return classRepository.findAll();
     }
 
-    @Override
-    public void createSubject(SubjectDTO subjectDTO, UUID classID) {
-        ClassModel classModel = classRepository.findById(classID).orElseThrow(() -> new RuntimeException("Class not found"));
-        SubjectModel subjectModel = new SubjectModel();
-        BeanUtils.copyProperties(subjectDTO, subjectModel);
-        classModel.addSubject(subjectModel);
-        classRepository.save(classModel);
-    }
+
 
     @Override
     public void deleteClass(UUID classId) {
@@ -91,5 +84,16 @@ public class ClassServiceImpl implements ClassService{
 
         return avgClasses;
     }
+
+    @Override
+    public UUID addSubjectToSubjectsList(ClassModel classModel, SubjectDTO subjectDTO) {
+        SubjectModel subjectModel = new SubjectModel();
+        BeanUtils.copyProperties(subjectDTO, subjectModel);
+        classModel.addSubject(subjectModel);
+       classRepository.save(classModel);
+
+        return classModel.getSubjects().get(classModel.getSubjects().size() - 1).getId();
+    }
+
 
 }

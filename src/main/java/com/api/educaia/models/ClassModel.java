@@ -27,7 +27,7 @@ public class ClassModel implements Serializable {
     private UUID id;
     private String name;
     private String schoolId;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubjectModel> subjects;
 
     public void removeSubject(UUID subjectId) {

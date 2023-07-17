@@ -30,7 +30,7 @@ public class TaskModel implements Serializable {
     private String description;
     private Long deadLineDate;
     private Long creationDate;
-    @OneToMany( cascade = CascadeType.ALL)
+    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "task_id")
     private List<QuizQuestionModel> quizQuestions = new ArrayList<>();
 

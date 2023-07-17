@@ -62,18 +62,6 @@ public class ClassController {
         return ResponseEntity.ok(classModels);
     }
 
-    @PostMapping("/create-subject-by-classId/{classId}")
-    public ResponseEntity<?> createSubject(@PathVariable UUID classId, @RequestBody SubjectDTO subjectDTO) {
-
-
-        try {
-            classService.createSubject(subjectDTO, classId);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return ResponseEntity.ok().build();
-    }
-
     @DeleteMapping("/delete-class/{classId}")
     public ResponseEntity<?> deleteClass(@PathVariable UUID classId) {
         try {
@@ -126,10 +114,17 @@ public class ClassController {
         return ResponseEntity.ok(listAvgClasses);
     }
 
+
     @GetMapping("/get-list-subjects-identifier-by-classId/{classId}")
-    public ResponseEntity<?> getSubjectsIdentifierByClassId(@PathVariable String classId)
+    public ResponseEntity<?> getSubjectsIdentifierByClassId(@PathVariable UUID classId)
     {
-        List<SubjectModel> subjects = subjectService.getSubjectsByClassId(classId);
+        Optional<ClassModel> classModel = classService.getClassById(classId);
+        if(classModel.isEmpty())
+        {
+            return ResponseEntity.badRequest().body("Class not found");
+        }
+        ClassModel classModelResponse = classModel.get();
+        List<SubjectModel> subjects = classModelResponse.getSubjects();
         List<SubjectIdentifierDTO> subjectsIdentifier = subjectService.getSubjectsIdentifierBySubjectsModel(subjects);
         return ResponseEntity.ok(subjectsIdentifier);
     }

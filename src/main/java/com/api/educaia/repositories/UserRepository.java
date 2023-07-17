@@ -1,6 +1,7 @@
 package com.api.educaia.repositories;
 
 import com.api.educaia.dtos.UserPublicDTO;
+import com.api.educaia.enums.RoleName;
 import com.api.educaia.models.UserModel;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -42,4 +43,9 @@ public interface UserRepository extends JpaRepository<UserModel, UUID> {
 
     @Query("SELECT u FROM UserModel u ORDER BY u.forumPoints DESC")
     List<UserModel> getUsersRankForum(Pageable top20UsersForum);
+
+    List<UserModel> findBySchoolId(String schoolId);
+
+    @Query("SELECT u FROM UserModel u WHERE u.schoolId = :schoolId AND u.role = :role")
+    List<UserModel> getBySchoolIdAndRole(String schoolId, RoleName role);
 }
