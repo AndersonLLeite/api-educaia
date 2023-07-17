@@ -1,6 +1,7 @@
 package com.api.educaia.controllers;
 
 import com.api.educaia.dtos.UserDTO;
+import com.api.educaia.dtos.UserIdentifierDTO;
 import com.api.educaia.dtos.UserPublicDTO;
 import com.api.educaia.models.UserModel;
 import com.api.educaia.services.UserService;
@@ -52,7 +53,7 @@ public class UserController {
     }
 
     @GetMapping("/get-users-by-class-id/{classId}")
-    public ResponseEntity<?> getUsersByClassId(@PathVariable UUID classId) {
+    public ResponseEntity<?> getUsersByClassId(@PathVariable String classId) {
         List<UserModel> users = userService.getUsersByClassId(classId);
         return new ResponseEntity<List<UserModel>>(users, HttpStatus.OK);
     }
@@ -214,7 +215,13 @@ public class UserController {
             return new ResponseEntity<UserPublicDTO>(userPublic, HttpStatus.OK);
         }
 
+        @GetMapping("/fetchTeachersBySchoolId/{schoolId}")
+        public ResponseEntity<?> fetchTeachersByScoolId(@PathVariable String schoolId) {
+            List<UserModel> teachers = userService.fetchTeachersByScoolId(schoolId);
+            List<UserIdentifierDTO> teachersIdentifier = userService.getUsersIdentifier(teachers);
+            return new ResponseEntity<List<UserIdentifierDTO>>(teachersIdentifier, HttpStatus.OK);
 
+        }
 
 
 

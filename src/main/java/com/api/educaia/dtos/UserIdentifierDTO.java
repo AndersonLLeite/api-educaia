@@ -9,10 +9,10 @@ import java.util.UUID;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SubjectIdentifierDTO {
-    private UUID id;
-    private String name;
-    private String teacherName;
 
+public class UserIdentifierDTO {
+    private UUID id;
+    private String nameComplete;
+    private String profileImagePath;
 
 }

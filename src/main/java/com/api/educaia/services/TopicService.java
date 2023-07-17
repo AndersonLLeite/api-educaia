@@ -1,7 +1,6 @@
 package com.api.educaia.services;
 
-import com.api.educaia.dtos.TopicDTO;
-import com.api.educaia.dtos.UserPublicDTO;
+import com.api.educaia.dtos.TopicIdentifierDTO;
 import com.api.educaia.models.TopicAnswer;
 import com.api.educaia.models.TopicModel;
 
@@ -14,7 +13,7 @@ public interface TopicService {
 
     List<TopicModel> listTopics();
 
-    List<TopicModel> getRecentTopics();
+    List<TopicIdentifierDTO> getRecentTopics();
 
     void removeTopic(UUID topicId);
 
@@ -22,13 +21,13 @@ public interface TopicService {
 
     List<TopicAnswer> listAnswers();
 
-    List<TopicModel> getPopularTopics();
+    List<TopicIdentifierDTO> getPopularTopics();
 
     void addFavorite(UUID topicId, String username);
 
     void removeFavorite(UUID topicId, String username);
 
-    List<TopicModel> getTopicByCategory(String category);
+    List<TopicIdentifierDTO> getTopicByCategory(String category);
 
     void addLike(UUID topicId, String username);
 
@@ -45,4 +44,10 @@ public interface TopicService {
     void removeAnswer(UUID answerId);
 
     void setBestAnswer(UUID answerId, UUID topicId);
+
+    List<TopicIdentifierDTO> getUnauthorizedTopics();
+
+    Optional<TopicModel> getTopicById(UUID topicId);
+
+    void approveTopic(UUID topicId);
 }

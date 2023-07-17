@@ -1,7 +1,6 @@
 package com.api.educaia.services;
 
-import com.api.educaia.dtos.TopicDTO;
-import com.api.educaia.dtos.UserPublicDTO;
+import com.api.educaia.dtos.TopicIdentifierDTO;
 import com.api.educaia.models.TopicAnswer;
 import com.api.educaia.models.TopicModel;
 import com.api.educaia.models.UserModel;
@@ -11,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -45,17 +44,34 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public List<TopicModel> getRecentTopics() {
+    public List<TopicIdentifierDTO> getRecentTopics() {
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.DESC, "creationDate"));
-
-        return topicRepository.findAll(pageable).getContent();
+        List<TopicModel> topics = topicRepository.findAll(pageable).getContent();
+        List<TopicIdentifierDTO> topicsIdentifiers = new ArrayList<>();
+        for (TopicModel topic: topics
+        ) {
+            if (topic.getIsUnauthorized()) {
+                continue;
+            }
+            TopicIdentifierDTO topicIdentifier = new TopicIdentifierDTO(topic.getId(), topic.getTitle(), topic.getCategory(), topic.getUserWhoCreated().getNameComplete(), topic.getAnswers().size(), topic.getUsernamesWhoFavorite().size());
+            topicsIdentifiers.add(topicIdentifier);        }
+        return topicsIdentifiers;
     }
     //TODO: Implement this method
     @Override
-    public List<TopicModel> getPopularTopics() {
+    public List<TopicIdentifierDTO> getPopularTopics() {
         Pageable top3FavoriteTopic = PageRequest.of(0, 3);
+        List<TopicModel> topics = topicRepository.findTop3TopicsByFavorites(top3FavoriteTopic);
+        List<TopicIdentifierDTO> topicsIdentifiers = new ArrayList<>();
+        for (TopicModel topic: topics
+        ) {
+            if (topic.getIsUnauthorized()) {
+                continue;
+            }
+            TopicIdentifierDTO topicIdentifier = new TopicIdentifierDTO(topic.getId(), topic.getTitle(), topic.getCategory(), topic.getUserWhoCreated().getNameComplete(), topic.getAnswers().size(), topic.getUsernamesWhoFavorite().size());
+            topicsIdentifiers.add(topicIdentifier);        }
 
-        return topicRepository.findTop3TopicsByFavorites(top3FavoriteTopic);
+        return  topicsIdentifiers;
     }
 
     @Override
@@ -81,8 +97,17 @@ public class TopicServiceImpl implements TopicService{
     }
 
     @Override
-    public List<TopicModel> getTopicByCategory(String category) {
-        return topicRepository.findByCategory(category);
+    public List<TopicIdentifierDTO> getTopicByCategory(String category) {
+        List<TopicModel> topicsByCategory = topicRepository.findByCategory(category);
+        List<TopicIdentifierDTO> topicsIdentifiers = new ArrayList<>();
+        for (TopicModel topic: topicsByCategory
+             ) {
+            if (topic.getIsUnauthorized()) {
+                continue;
+            }
+            TopicIdentifierDTO topicIdentifier = new TopicIdentifierDTO(topic.getId(), topic.getTitle(), topic.getCategory(), topic.getUserWhoCreated().getNameComplete(), topic.getAnswers().size(), topic.getUsernamesWhoFavorite().size());
+            topicsIdentifiers.add(topicIdentifier);        }
+        return topicsIdentifiers;
     }
 
     @Override
@@ -178,7 +203,34 @@ public class TopicServiceImpl implements TopicService{
         topicRepository.save(topic);
     }
 
+    @Override
+    public List<TopicIdentifierDTO> getUnauthorizedTopics() {
+        List<TopicModel> closedTopics = topicRepository.findByUnauthorized(true);
+        List<TopicIdentifierDTO> topics = new ArrayList<>();
+        for(TopicModel closed: closedTopics ){
+            TopicIdentifierDTO topicIdentifier = new TopicIdentifierDTO(closed.getId(), closed.getTitle(), closed.getCategory(), closed.getUserWhoCreated().getNameComplete(), closed.getAnswers().size(), closed.getUsernamesWhoFavorite().size());
+            topics.add(topicIdentifier);
+        }
 
+        return topics;
+    }
+
+    @Override
+    public Optional<TopicModel> getTopicById(UUID topicId) {
+        return topicRepository.findById(topicId);
+    }
+
+    @Override
+    public void approveTopic(UUID topicId) {
+        //TODO: notificar ao usuário que o tópico foi aprovado
+        Optional<TopicModel> topicOp = topicRepository.findById(topicId);
+        if (!topicOp.isPresent()) {
+            return;
+        }
+        TopicModel topic = topicOp.get();
+        topic.setUnauthorized(false);
+        topicRepository.save(topic);
+    }
 
 
     @Override

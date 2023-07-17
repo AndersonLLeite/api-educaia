@@ -3,6 +3,7 @@ package com.api.educaia.controllers;
 import com.api.educaia.dtos.GradeDTO;
 import com.api.educaia.dtos.SubjectDTO;
 import com.api.educaia.dtos.SubjectIdentifierDTO;
+import com.api.educaia.dtos.UserIdentifierDTO;
 import com.api.educaia.models.ClassModel;
 import com.api.educaia.models.GradeModel;
 import com.api.educaia.models.SubjectModel;
@@ -11,6 +12,7 @@ import com.api.educaia.services.GradeService;
 import com.api.educaia.services.SubjectService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,16 +34,6 @@ public class SubjectController {
     @Autowired
     private ClassService classService;
 
-@PostMapping("/create-subject-by-classID/{classId}")
-    public ResponseEntity<?> createSubject(@PathVariable UUID classID, @RequestBody SubjectDTO subjectDTO){
-        try {
-            subjectService.createSubject(subjectDTO);
-        }
-        catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-        return ResponseEntity.ok().build();
-    }
 
 @GetMapping("/list-subjects")
     public ResponseEntity<?> listSubjects(){
@@ -102,7 +94,7 @@ public class SubjectController {
         try {
             SubjectModel subjectModel = subjectService.getSubjectBySubjectId(subjectId);
             List<GradeDTO> gradesDTO = gradeService.getGradesDTOByGradesModel(subjectModel.getGrades());
-            SubjectDTO subjectDTO = new SubjectDTO(subjectModel.getId(), subjectModel.getName(), subjectModel.getSchoolId(), subjectModel.getClassId(), gradesDTO);
+            SubjectDTO subjectDTO = new SubjectDTO(subjectModel.getId(), subjectModel.getName(), subjectModel.getSchoolId(), subjectModel.getClassId(), subjectModel.getTeacherName(), gradesDTO);
             return ResponseEntity.ok(subjectDTO);
         }
         catch (Exception e){
@@ -119,7 +111,6 @@ public class SubjectController {
         ClassModel classModel = classModelOp.get();
         try {
             classService.deleteSubjectFromSubjectsList(classModel, subjectId);
-            subjectService.deleteSubjectBySubjectId(subjectId);
         }
         catch (Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
@@ -127,7 +118,26 @@ public class SubjectController {
         return ResponseEntity.ok().build();
     }
 
+    @PutMapping("/assign-teacher-to-subject/{subjectId}")
+    public ResponseEntity<?> assignTeacherToSubject(@PathVariable UUID subjectId, @RequestBody UserIdentifierDTO teacher){
+        try {
+            subjectService.assignTeacherToSubject(subjectId, teacher);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
 
-
+    @PostMapping("/create-subject-by-classId/{classId}")
+    public ResponseEntity<?> createSubjectByClassId(@PathVariable UUID classId, @RequestBody SubjectDTO subjectDTO){
+        Optional<ClassModel> classModelOp = classService.getClassByClassId(classId);
+        if(!classModelOp.isPresent()){
+            return ResponseEntity.badRequest().body("Class not found");
+        }
+        ClassModel classModel = classModelOp.get();
+        UUID subjectId = classService.addSubjectToSubjectsList(classModel, subjectDTO);
+        return new ResponseEntity<UUID>(subjectId, HttpStatus.CREATED);
+    }
 
 }

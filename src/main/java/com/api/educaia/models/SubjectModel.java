@@ -25,11 +25,23 @@ public class SubjectModel implements Serializable {
     private String name;
     private String schoolId;
     private String classId;
-    @OneToMany(cascade = CascadeType.ALL)
+    private String teacherId;
+    private String teacherName;
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<GradeModel> grades;
 
 
     public void add(GradeModel gradeModel) {
         this.grades.add(gradeModel);
+    }
+
+    public double getAvg() {
+        if (this.grades.size() == 0) return 0;
+        double sum = 0;
+        for (GradeModel grade : this.grades) {
+            sum += grade.getGrade();
+        }
+
+        return sum / this.grades.size();
     }
 }

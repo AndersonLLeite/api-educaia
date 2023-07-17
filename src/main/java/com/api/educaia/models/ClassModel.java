@@ -27,7 +27,7 @@ public class ClassModel implements Serializable {
     private UUID id;
     private String name;
     private String schoolId;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<SubjectModel> subjects;
 
     public void removeSubject(UUID subjectId) {
@@ -36,5 +36,15 @@ public class ClassModel implements Serializable {
 
     public void addSubject(SubjectModel subjectModel) {
         this.subjects.add(subjectModel);
+    }
+
+    public double getAvg() {
+        if (this.subjects.size() == 0) return 0;
+        double sum = 0;
+        for (SubjectModel subject : this.subjects) {
+            sum += subject.getAvg();
+        }
+
+        return sum / this.subjects.size();
     }
 }

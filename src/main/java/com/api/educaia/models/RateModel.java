@@ -34,7 +34,6 @@ public class RateModel implements Serializable {
         this.taskId = taskID;
     }
 
-
     public void updateQuestion1(int option) {
         this.question1[option]++;
     }

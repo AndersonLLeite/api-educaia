@@ -18,4 +18,5 @@ public interface TopicRepository extends JpaRepository<TopicModel, UUID> {
 
     List<TopicModel> findByCategory(String category);
 
+    List<TopicModel> findByUnauthorized(Boolean isUnauthorized);
 }
