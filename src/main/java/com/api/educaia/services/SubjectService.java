@@ -26,4 +26,5 @@ public interface SubjectService {
 
     void assignTeacherToSubject(UUID subjectId, UserIdentifierDTO teacher);
 
+    List<SubjectModel> getSubjectsByClassIdAndTeacherId(String classId, String teacherId);
 }

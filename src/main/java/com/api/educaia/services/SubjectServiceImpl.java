@@ -59,6 +59,11 @@ public class SubjectServiceImpl implements  SubjectService{
         subjectRepository.save(subjectModel);
     }
 
+    @Override
+    public List<SubjectModel> getSubjectsByClassIdAndTeacherId(String classId, String teacherId) {
+        return subjectRepository.findByClassIdAndTeacherId(classId, teacherId);
+
+    }
 
 
 }

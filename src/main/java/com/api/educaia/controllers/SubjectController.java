@@ -140,4 +140,12 @@ public class SubjectController {
         return new ResponseEntity<UUID>(subjectId, HttpStatus.CREATED);
     }
 
+    @GetMapping("/get-subjects-identifier-by-classId-and-teacherId/{classId}/{teacherId}")
+    public ResponseEntity<?> getSubjectsIdentifierByClassIdAndTeacherId(@PathVariable String classId, @PathVariable String teacherId){
+        List<SubjectModel> subjectModels = subjectService.getSubjectsByClassIdAndTeacherId(classId, teacherId);
+        List<SubjectIdentifierDTO> subjectsIdentifierDTO = subjectService.getSubjectsIdentifierBySubjectsModel(subjectModels);
+        return ResponseEntity.ok(subjectsIdentifierDTO);
+    }
+
+
 }

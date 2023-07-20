@@ -2,6 +2,7 @@ package com.api.educaia.services;
 
 import com.api.educaia.dtos.AvgClassDTO;
 import com.api.educaia.dtos.AvgSubjectsDTO;
+import com.api.educaia.dtos.ClassIdentifierDTO;
 import com.api.educaia.dtos.SubjectDTO;
 import com.api.educaia.models.ClassModel;
 import com.api.educaia.models.SubjectModel;
@@ -29,4 +30,8 @@ public interface ClassService {
     List<AvgClassDTO> getListAvgClasses(List<ClassModel> classes);
 
     UUID addSubjectToSubjectsList(ClassModel classModel, SubjectDTO subjectDTO);
+
+    List<ClassModel> getClassesByTeacherIdAndSchoolId(String teacherId, String schoolId);
+
+    List<ClassIdentifierDTO> getClassesIdentifierByClassesModel(List<ClassModel> classes);
 }

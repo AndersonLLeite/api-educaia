@@ -47,12 +47,7 @@ public class ClassController {
     @GetMapping("/list-classes-by-schoolId/{schoolId}")
     public ResponseEntity<?> listClassesBySchoolId(@PathVariable String schoolId) {
         List<ClassModel> classModels = classService.listClassesBySchoolId(schoolId);
-        List<ClassIdentifierDTO> classIdentifierDTOS = new ArrayList<>();
-        for (ClassModel classModel : classModels) {
-            ClassIdentifierDTO classIdentifierDTO = new ClassIdentifierDTO(classModel.getId(), classModel.getName());
-
-            classIdentifierDTOS.add(classIdentifierDTO);
-        }
+        List<ClassIdentifierDTO> classIdentifierDTOS = classService.getClassesIdentifierByClassesModel(classModels);
         return ResponseEntity.ok(classIdentifierDTOS);
     }
 
@@ -135,6 +130,14 @@ public class ClassController {
         List<UserModel> students = userService.getStudentsByClassId(classId);
         List<UserIdentifierDTO> studentsIdentifier = userService.getUsersIdentifier(students);
         return ResponseEntity.ok(studentsIdentifier);
+    }
+
+    @GetMapping("/get-classes-by-teacherId-and-schoolId/{teacherId}/{schoolId}")
+    public ResponseEntity<?> getClassesByTeacherIdAndSchoolId(@PathVariable String teacherId, @PathVariable String schoolId)
+    {
+        List<ClassModel> classes = classService.getClassesByTeacherIdAndSchoolId(teacherId, schoolId);
+        List<ClassIdentifierDTO> classesIdentifier = classService.getClassesIdentifierByClassesModel(classes);
+        return ResponseEntity.ok(classesIdentifier);
     }
 
 

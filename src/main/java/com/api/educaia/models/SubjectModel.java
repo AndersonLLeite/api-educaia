@@ -31,6 +31,7 @@ public class SubjectModel implements Serializable {
     private List<GradeModel> grades;
 
 
+
     public void add(GradeModel gradeModel) {
         this.grades.add(gradeModel);
     }
