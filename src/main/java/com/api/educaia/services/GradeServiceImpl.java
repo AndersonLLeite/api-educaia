@@ -35,7 +35,7 @@ public class GradeServiceImpl implements GradeService{
         List<GradeDTO> gradesDTO = new ArrayList<>();
         for ( GradeModel gradeModel: grades
              ) {
-            GradeDTO gradeDTO = new GradeDTO(gradeModel.getName(), gradeModel.getUserId(), gradeModel.getGrade(), gradeModel.getStatus());
+            GradeDTO gradeDTO = new GradeDTO(gradeModel.getName(), gradeModel.getEvaluationId(), gradeModel.getUserId(), gradeModel.getGrade(), gradeModel.getStatus());
             gradesDTO.add(gradeDTO);
 
         }

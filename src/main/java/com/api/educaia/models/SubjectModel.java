@@ -28,21 +28,26 @@ public class SubjectModel implements Serializable {
     private String teacherId;
     private String teacherName;
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<GradeModel> grades;
-
-
-
-    public void add(GradeModel gradeModel) {
-        this.grades.add(gradeModel);
-    }
+    private List<EvaluationModel> evaluations;
 
     public double getAvg() {
-        if (this.grades.size() == 0) return 0;
+        if (this.evaluations.size() == 0) return 0;
         double sum = 0;
-        for (GradeModel grade : this.grades) {
-            sum += grade.getGrade();
+        for (EvaluationModel evaluation : this.evaluations) {
+            sum += evaluation.getAvg();
         }
+        return sum / this.evaluations.size();
+    }
 
-        return sum / this.grades.size();
+    public void addGradeToEvaluation(GradeModel gradeModel) {
+        for (EvaluationModel evaluation : this.evaluations) {
+            if (evaluation.getId().equals(UUID.fromString(gradeModel.getEvaluationId()))) {
+                evaluation.add(gradeModel);
+            }
+        }
+    }
+
+    public void addEvaluation(EvaluationModel evaluationModel) {
+        this.evaluations.add(evaluationModel);
     }
 }

@@ -1,10 +1,10 @@
 package com.api.educaia.services;
 
-import com.api.educaia.dtos.SubjectDTO;
-import com.api.educaia.dtos.SubjectIdentifierDTO;
-import com.api.educaia.dtos.UserIdentifierDTO;
+import com.api.educaia.dtos.*;
+import com.api.educaia.models.EvaluationModel;
 import com.api.educaia.models.GradeModel;
 import com.api.educaia.models.SubjectModel;
+import com.api.educaia.repositories.EvaluationRepository;
 import com.api.educaia.repositories.SubjectRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +18,9 @@ import java.util.UUID;
 public class SubjectServiceImpl implements  SubjectService{
     @Autowired
     private SubjectRepository subjectRepository;
+
+    @Autowired
+    private EvaluationRepository evaluationRepository;
 
     @Override
     public List<SubjectModel> listSubjects() {
@@ -35,8 +38,8 @@ public class SubjectServiceImpl implements  SubjectService{
     }
 
     @Override
-    public void addGradeToSubject(SubjectModel subjectModel, GradeModel gradeModel) {
-        subjectModel.add(gradeModel);
+    public void addGradeToSubjectEvaluation(SubjectModel subjectModel, GradeModel gradeModel) {
+        subjectModel.addGradeToEvaluation(gradeModel);
         subjectRepository.save(subjectModel);
     }
 
@@ -63,6 +66,39 @@ public class SubjectServiceImpl implements  SubjectService{
     public List<SubjectModel> getSubjectsByClassIdAndTeacherId(String classId, String teacherId) {
         return subjectRepository.findByClassIdAndTeacherId(classId, teacherId);
 
+    }
+
+    @Override
+    public List<EvaluationDTO> getEvaluationsDTOByEvaluationsModel(List<EvaluationModel> evaluations) {
+        List<EvaluationDTO> evaluationDTOS = new ArrayList<>();
+        for (EvaluationModel evaluation : evaluations) {
+            EvaluationDTO evaluationDTO = new EvaluationDTO(evaluation.getName(), evaluation.getSubjectId(), getGradesModelToGradesDTO(evaluation.getGrades()));
+            evaluationDTOS.add(evaluationDTO);
+        }
+
+        return evaluationDTOS;
+    }
+
+    private List<GradeDTO> getGradesModelToGradesDTO(List<GradeModel> grades) {
+        List<GradeDTO> gradeDTOS = new ArrayList<>();
+        for (GradeModel grade : grades) {
+            GradeDTO gradeDTO = new GradeDTO(grade.getName(), grade.getEvaluationId(), grade.getUserId(), grade.getGrade(), grade.getStatus());
+            gradeDTOS.add(gradeDTO);
+        }
+        return gradeDTOS;
+    }
+
+    @Override
+    public void addEvaluationToSubjectEvaluation(SubjectModel subjectModel, EvaluationDTO evaluationDTO) {
+        EvaluationModel evaluationModel = new EvaluationModel();
+        BeanUtils.copyProperties(evaluationDTO, evaluationModel);
+        subjectModel.addEvaluation(evaluationModel);
+        subjectRepository.save(subjectModel);
+    }
+
+    @Override
+    public List<EvaluationModel> listEvaluations() {
+        return evaluationRepository.findAll();
     }
 
 

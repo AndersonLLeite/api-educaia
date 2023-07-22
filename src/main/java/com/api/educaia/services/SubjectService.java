@@ -1,10 +1,7 @@
 package com.api.educaia.services;
 
-import com.api.educaia.dtos.AvgClassDTO;
-import com.api.educaia.dtos.SubjectDTO;
-import com.api.educaia.dtos.SubjectIdentifierDTO;
-import com.api.educaia.dtos.UserIdentifierDTO;
-import com.api.educaia.models.ClassModel;
+import com.api.educaia.dtos.*;
+import com.api.educaia.models.EvaluationModel;
 import com.api.educaia.models.GradeModel;
 import com.api.educaia.models.SubjectModel;
 
@@ -19,7 +16,7 @@ public interface SubjectService {
 
     SubjectModel getSubjectBySubjectId(UUID subjectId);
 
-    void addGradeToSubject(SubjectModel subjectModel, GradeModel gradeModel);
+    void addGradeToSubjectEvaluation(SubjectModel subjectModel, GradeModel gradeModel);
 
     List<SubjectIdentifierDTO> getSubjectsIdentifierBySubjectsModel(List<SubjectModel> subjectModels);
 
@@ -27,4 +24,10 @@ public interface SubjectService {
     void assignTeacherToSubject(UUID subjectId, UserIdentifierDTO teacher);
 
     List<SubjectModel> getSubjectsByClassIdAndTeacherId(String classId, String teacherId);
+
+    List<EvaluationDTO> getEvaluationsDTOByEvaluationsModel(List<EvaluationModel> evaluations);
+
+    void addEvaluationToSubjectEvaluation(SubjectModel subjectModel, EvaluationDTO evaluationDTO);
+
+    List<EvaluationModel> listEvaluations();
 }
