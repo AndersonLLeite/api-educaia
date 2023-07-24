@@ -42,4 +42,7 @@ public class EvaluationModel implements Serializable {
         return sum / this.grades.size();
     }
 
+    public void addGrade(GradeModel gradeModel) {
+        this.grades.add(gradeModel);
+    }
 }

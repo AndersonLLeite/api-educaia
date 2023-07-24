@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -38,9 +39,17 @@ public class SubjectServiceImpl implements  SubjectService{
     }
 
     @Override
-    public void addGradeToSubjectEvaluation(SubjectModel subjectModel, GradeModel gradeModel) {
-        subjectModel.addGradeToEvaluation(gradeModel);
-        subjectRepository.save(subjectModel);
+    public UUID addGradeToSubjectEvaluation(UUID evaluationId, GradeDTO gradeDTO) {
+
+            Optional<EvaluationModel> evaluationModelOp = evaluationRepository.findById(evaluationId);
+            if (!evaluationModelOp.isPresent()) {
+                throw new RuntimeException("Evaluation not found");
+            }
+            EvaluationModel evaluationModel = evaluationModelOp.get();
+            GradeModel gradeModel = new GradeModel();
+            BeanUtils.copyProperties(gradeDTO, gradeModel);
+            evaluationModel.addGrade(gradeModel);
+            return evaluationRepository.save(evaluationModel).getGrades().get(evaluationModel.getGrades().size() - 1).getId();
     }
 
     @Override
@@ -72,7 +81,7 @@ public class SubjectServiceImpl implements  SubjectService{
     public List<EvaluationDTO> getEvaluationsDTOByEvaluationsModel(List<EvaluationModel> evaluations) {
         List<EvaluationDTO> evaluationDTOS = new ArrayList<>();
         for (EvaluationModel evaluation : evaluations) {
-            EvaluationDTO evaluationDTO = new EvaluationDTO(evaluation.getName(), evaluation.getSubjectId(), getGradesModelToGradesDTO(evaluation.getGrades()));
+            EvaluationDTO evaluationDTO = new EvaluationDTO(evaluation.getId(), evaluation.getName(), evaluation.getSubjectId(), getGradesModelToGradesDTO(evaluation.getGrades()));
             evaluationDTOS.add(evaluationDTO);
         }
 
@@ -82,23 +91,34 @@ public class SubjectServiceImpl implements  SubjectService{
     private List<GradeDTO> getGradesModelToGradesDTO(List<GradeModel> grades) {
         List<GradeDTO> gradeDTOS = new ArrayList<>();
         for (GradeModel grade : grades) {
-            GradeDTO gradeDTO = new GradeDTO(grade.getName(), grade.getEvaluationId(), grade.getUserId(), grade.getGrade(), grade.getStatus());
+            GradeDTO gradeDTO = new GradeDTO(grade.getId(), grade.getName(), grade.getEvaluationId(), grade.getUserId(), grade.getGrade(), grade.getStatus());
             gradeDTOS.add(gradeDTO);
         }
         return gradeDTOS;
     }
 
     @Override
-    public void addEvaluationToSubjectEvaluation(SubjectModel subjectModel, EvaluationDTO evaluationDTO) {
+    public UUID addEvaluationToSubjectEvaluation(SubjectModel subjectModel, EvaluationDTO evaluationDTO) {
         EvaluationModel evaluationModel = new EvaluationModel();
         BeanUtils.copyProperties(evaluationDTO, evaluationModel);
         subjectModel.addEvaluation(evaluationModel);
-        subjectRepository.save(subjectModel);
+        return evaluationRepository.save(evaluationModel).getId();
     }
 
     @Override
     public List<EvaluationModel> listEvaluations() {
         return evaluationRepository.findAll();
+    }
+
+    @Override
+    public void deleteEvaluation( UUID subjectId, String evaluationId) {
+        Optional<SubjectModel> subjectModelOp = subjectRepository.findById(subjectId);
+        if (!subjectModelOp.isPresent()){
+            throw new RuntimeException("Subject not found");
+        }
+        SubjectModel subjectModel = subjectModelOp.get();
+        subjectModel.deleteEvaluation(evaluationId);
+        subjectRepository.save(subjectModel);
     }
 
 

@@ -45,6 +45,8 @@ public class UserModel implements UserDetails, Serializable {
     private List<Token> tokens;
 
     private String schoolId;
+
+    private int enrollment;
     private String profileImagePath;
     private int points;
     @ElementCollection

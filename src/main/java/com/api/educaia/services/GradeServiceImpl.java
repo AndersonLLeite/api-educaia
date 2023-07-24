@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -35,12 +36,24 @@ public class GradeServiceImpl implements GradeService{
         List<GradeDTO> gradesDTO = new ArrayList<>();
         for ( GradeModel gradeModel: grades
              ) {
-            GradeDTO gradeDTO = new GradeDTO(gradeModel.getName(), gradeModel.getEvaluationId(), gradeModel.getUserId(), gradeModel.getGrade(), gradeModel.getStatus());
+            GradeDTO gradeDTO = new GradeDTO(gradeModel.getId(), gradeModel.getName(), gradeModel.getEvaluationId(), gradeModel.getUserId(), gradeModel.getGrade(), gradeModel.getStatus());
             gradesDTO.add(gradeDTO);
 
         }
         return gradesDTO;
     }
+
+    @Override
+    public void updateGrade(UUID gradeId, double grade) {
+        Optional<GradeModel> gradeModelOp = gradeRepository.findById(gradeId);
+        if (!gradeModelOp.isPresent()){
+            throw new RuntimeException("Grade not found");
+        }
+        GradeModel gradeModel = gradeModelOp.get();
+        gradeModel.setGrade(grade);
+        gradeRepository.save(gradeModel);
+    }
+
 
 
 }

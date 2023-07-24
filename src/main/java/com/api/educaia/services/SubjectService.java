@@ -16,7 +16,7 @@ public interface SubjectService {
 
     SubjectModel getSubjectBySubjectId(UUID subjectId);
 
-    void addGradeToSubjectEvaluation(SubjectModel subjectModel, GradeModel gradeModel);
+    UUID addGradeToSubjectEvaluation(UUID evaluationId, GradeDTO gradeDTO);
 
     List<SubjectIdentifierDTO> getSubjectsIdentifierBySubjectsModel(List<SubjectModel> subjectModels);
 
@@ -27,7 +27,9 @@ public interface SubjectService {
 
     List<EvaluationDTO> getEvaluationsDTOByEvaluationsModel(List<EvaluationModel> evaluations);
 
-    void addEvaluationToSubjectEvaluation(SubjectModel subjectModel, EvaluationDTO evaluationDTO);
+    UUID addEvaluationToSubjectEvaluation(SubjectModel subjectModel, EvaluationDTO evaluationDTO);
 
     List<EvaluationModel> listEvaluations();
+
+    void deleteEvaluation(UUID subjectId, String evaluationId);
 }

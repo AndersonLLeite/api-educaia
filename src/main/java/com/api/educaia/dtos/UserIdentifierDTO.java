@@ -13,6 +13,7 @@ import java.util.UUID;
 public class UserIdentifierDTO {
     private UUID id;
     private String nameComplete;
+    private int enrollment;
     private String profileImagePath;
 
 }

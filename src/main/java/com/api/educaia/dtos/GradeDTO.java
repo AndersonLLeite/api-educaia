@@ -10,6 +10,7 @@ import java.util.UUID;
 @Getter
 @NoArgsConstructor
 public class GradeDTO {
+        private UUID id;
         @NotBlank
         private String name;
         @NotBlank
@@ -21,7 +22,8 @@ public class GradeDTO {
         @NotBlank
         private String status;
 
-        public GradeDTO(String name, String evaluationId, String userId, double grade, String status) {
+        public GradeDTO(UUID id, String name, String evaluationId, String userId, double grade, String status) {
+            this.id = id;
             this.name = name;
             this.evaluationId = evaluationId;
             this.userId = userId;

@@ -169,7 +169,7 @@ public class UserServiceImpl implements  UserService{
     public List<UserIdentifierDTO> getUsersIdentifier(List<UserModel> users) {
         List<UserIdentifierDTO> usersIdentifier = new ArrayList<>();
         for (UserModel user : users) {
-            usersIdentifier.add(new UserIdentifierDTO(user.getId(), user.getNameComplete(), user.getProfileImagePath()));
+            usersIdentifier.add(new UserIdentifierDTO(user.getId(), user.getNameComplete(), user.getEnrollment(), user.getProfileImagePath()));
         }
         return usersIdentifier;
     }

@@ -54,8 +54,8 @@ public class SubjectController {
     public ResponseEntity<?> createEvaluation(@PathVariable UUID subjectId, @RequestBody EvaluationDTO evaluationDTO){
         try {
             SubjectModel subjectModel = subjectService.getSubjectBySubjectId(subjectId);
-            subjectService.addEvaluationToSubjectEvaluation(subjectModel, evaluationDTO);
-            return ResponseEntity.ok(evaluationDTO);
+            UUID evaluationId = subjectService.addEvaluationToSubjectEvaluation(subjectModel, evaluationDTO);
+            return ResponseEntity.ok(evaluationId);
         }catch (Exception e){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }
@@ -72,20 +72,20 @@ public class SubjectController {
         return ResponseEntity.ok(subjectsIdentifierDTO);
     }
 
-    @PostMapping("/create-grade-by-subjectId/{subjectId}")
-    public ResponseEntity<?> createGradeBySubjectId(@PathVariable UUID subjectId, @RequestBody GradeDTO gradeDTO){
-        try {
-            SubjectModel subjectModel = subjectService.getSubjectBySubjectId(subjectId);
-            GradeModel gradeModel = new GradeModel();
-            BeanUtils.copyProperties(gradeDTO, gradeModel);
-            subjectService.addGradeToSubjectEvaluation(subjectModel, gradeModel);
-        }
-        catch (Exception e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-
-        return ResponseEntity.ok().build();
-    }
+//    @PostMapping("/create-grade-by-subjectId/{subjectId}")
+//    public ResponseEntity<?> createGradeBySubjectId(@PathVariable UUID subjectId, @RequestBody GradeDTO gradeDTO){
+//        try {
+//            SubjectModel subjectModel = subjectService.getSubjectBySubjectId(subjectId);
+//            GradeModel gradeModel = new GradeModel();
+//            BeanUtils.copyProperties(gradeDTO, gradeModel);
+//            subjectService.addGradeToSubjectEvaluation(subjectModel, gradeModel);
+//        }
+//        catch (Exception e){
+//            return ResponseEntity.badRequest().body(e.getMessage());
+//        }
+//
+//        return ResponseEntity.ok().build();
+//    }
 
 //    @GetMapping("/get-grades-by-subjectId/{subjectId}")
 //    public ResponseEntity<?> getGradesBySubjectId(@PathVariable UUID subjectId){
@@ -161,5 +161,37 @@ public class SubjectController {
         return ResponseEntity.ok(subjectService.listEvaluations());
     }
 
+    @PutMapping("/update-grade/{gradeId}/{grade}")
+    public ResponseEntity<?> updateGrade(@PathVariable UUID gradeId, @PathVariable double grade){
+        try {
+            gradeService.updateGrade(gradeId, grade);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
 
+    @PostMapping("/create-grade-by-evaluationId/{evaluationId}")
+    public ResponseEntity<?> createGradeByEvaluationId(@PathVariable UUID evaluationId, @RequestBody GradeDTO gradeDTO){
+        try {
+          UUID gradeId = subjectService.addGradeToSubjectEvaluation(evaluationId, gradeDTO);
+          return ResponseEntity.ok(gradeId);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+
+    }
+
+    @DeleteMapping("/delete-evaluation-by-subjectId/{subjectId}/{evaluationId}")
+    public ResponseEntity<?> deleteEvaluation(@PathVariable UUID subjectId, @PathVariable String evaluationId){
+        try {
+            subjectService.deleteEvaluation(subjectId, evaluationId);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
 }

@@ -50,4 +50,8 @@ public class SubjectModel implements Serializable {
     public void addEvaluation(EvaluationModel evaluationModel) {
         this.evaluations.add(evaluationModel);
     }
+
+    public void deleteEvaluation(String evaluationId) {
+        this.evaluations.removeIf(evaluation -> evaluation.getId().equals(UUID.fromString(evaluationId)));
+    }
 }

@@ -14,6 +14,9 @@ public class UserDTO {
     @NotBlank
     private String username;
     @NotBlank
+    private int enrollment;
+    @NotBlank
+
     private String nameComplete;
     @NotBlank
     private String password;
