@@ -159,6 +159,7 @@ public class UserController {
         userService.addFollower(user, followerUsername);
         userService.addFollowing(follower, username);
         return ResponseEntity.ok().build();
+
     }
 
     @PutMapping("/removeFollow/{username}/{followerUsername}")
