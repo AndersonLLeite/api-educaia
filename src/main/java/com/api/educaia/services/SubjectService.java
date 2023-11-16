@@ -4,8 +4,10 @@ import com.api.educaia.dtos.*;
 import com.api.educaia.models.EvaluationModel;
 import com.api.educaia.models.GradeModel;
 import com.api.educaia.models.SubjectModel;
+import com.api.educaia.models.TaskModel;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface SubjectService {
@@ -14,7 +16,7 @@ public interface SubjectService {
 
     List<SubjectModel> getSubjectsByClassId(String classId);
 
-    SubjectModel getSubjectBySubjectId(UUID subjectId);
+    Optional<SubjectModel> getSubjectBySubjectId(UUID subjectId);
 
     UUID addGradeToSubjectEvaluation(UUID evaluationId, GradeDTO gradeDTO);
 
@@ -32,4 +34,12 @@ public interface SubjectService {
     List<EvaluationModel> listEvaluations();
 
     void deleteEvaluation(UUID subjectId, String evaluationId);
+
+    TaskDTO addTaskToSubjectTasks(SubjectModel subjectModel, TaskModel taskModel);
+
+    List<TaskDTO> getTasksBySubject(SubjectModel subjectModel);
+
+    void deleteTask(SubjectModel subjectModel, UUID taskId);
+
+    void updateTask(SubjectModel subjectModel, TaskDTO taskDTO);
 }

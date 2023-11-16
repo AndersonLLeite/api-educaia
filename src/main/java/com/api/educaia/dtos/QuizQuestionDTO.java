@@ -13,6 +13,12 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuizQuestionDTO {
+
+    public QuizQuestionDTO(String question, List<String> answers, int correctAnswer) {
+        this.question = question;
+        this.answers = answers;
+        this.correctAnswer = correctAnswer;
+    }
     @NotNull
     private UUID taskId;
     @NotBlank

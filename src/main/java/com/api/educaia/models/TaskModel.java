@@ -24,18 +24,21 @@ public class TaskModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    private String SubjectName;
     private String title;
     private String description;
     private Long deadLineDate;
     private Long creationDate;
     private String teacherName;
-
     @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "task_id")
     private List<QuizQuestionModel> quizQuestions = new ArrayList<>();
-
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private SubjectModel subject;
     private String classId;
     private String schoolId;
+
 
     @JsonIgnore
     public List<Integer> getCorrectAnswers() {

@@ -4,6 +4,7 @@ import com.api.educaia.dtos.*;
 import com.api.educaia.models.ClassModel;
 import com.api.educaia.models.GradeModel;
 import com.api.educaia.models.SubjectModel;
+import com.api.educaia.models.TaskModel;
 import com.api.educaia.services.ClassService;
 import com.api.educaia.services.GradeService;
 import com.api.educaia.services.SubjectService;
@@ -53,7 +54,14 @@ public class SubjectController {
     @PostMapping("/create-evaluation-by-subjectId/{subjectId}")
     public ResponseEntity<?> createEvaluation(@PathVariable UUID subjectId, @RequestBody EvaluationDTO evaluationDTO){
         try {
-            SubjectModel subjectModel = subjectService.getSubjectBySubjectId(subjectId);
+            Optional<SubjectModel> subjectModelOp = subjectService.getSubjectBySubjectId(subjectId);
+            if (!subjectModelOp.isPresent())
+            {
+                return ResponseEntity.badRequest().body("Subject not found");
+
+            }
+            SubjectModel subjectModel = subjectModelOp.get();
+
             UUID evaluationId = subjectService.addEvaluationToSubjectEvaluation(subjectModel, evaluationDTO);
             return ResponseEntity.ok(evaluationId);
         }catch (Exception e){
@@ -101,7 +109,7 @@ public class SubjectController {
     @GetMapping("/get-subject-by-subjectId/{subjectId}")
     public ResponseEntity<?> getSubjectBySubjectId(@PathVariable UUID subjectId){
         try {
-            SubjectModel subjectModel = subjectService.getSubjectBySubjectId(subjectId);
+            SubjectModel subjectModel = subjectService.getSubjectBySubjectId(subjectId).orElseThrow();
             List<EvaluationDTO> evaluationsDTO = subjectService.getEvaluationsDTOByEvaluationsModel(subjectModel.getEvaluations());
             SubjectDTO subjectDTO = new SubjectDTO(subjectModel.getId(), subjectModel.getName(), subjectModel.getSchoolId(), subjectModel.getClassId(), subjectModel.getTeacherName(), evaluationsDTO);
             return ResponseEntity.ok(subjectDTO);
@@ -194,4 +202,73 @@ public class SubjectController {
         }
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/get-tasks-by-subjectId/{subjectId}")
+    public ResponseEntity<?> getTasksBySubjectId(@PathVariable UUID subjectId){
+        try {
+            Optional<SubjectModel> subjectModelOp =  subjectService.getSubjectBySubjectId(subjectId);
+            if(!subjectModelOp.isPresent()){
+                return ResponseEntity.badRequest().body("Subject not found");
+            }
+            SubjectModel subjectModel = subjectModelOp.get();
+            List<TaskDTO> taskDTOS = subjectService.getTasksBySubject(subjectModel);
+            return ResponseEntity.ok(taskDTOS);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/create-task-by-subjectId/{subjectId}")
+    public ResponseEntity<?> createTaskBySubjectId(@PathVariable UUID subjectId, @RequestBody TaskDTO taskDTO){
+        try {
+            Optional<SubjectModel> subjectModelOp =  subjectService.getSubjectBySubjectId(subjectId);
+            if(!subjectModelOp.isPresent()){
+                return ResponseEntity.badRequest().body("Subject not found");
+            }
+            SubjectModel subjectModel = subjectModelOp.get();
+            TaskModel taskModel = new TaskModel();
+            BeanUtils.copyProperties(taskDTO, taskModel);
+            taskModel.setSubjectName(subjectModel.getName());
+
+            TaskDTO task = subjectService.addTaskToSubjectTasks(subjectModel, taskModel);
+            return ResponseEntity.ok(task);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/delete-task/{subjectId}/{taskId}")
+    public ResponseEntity<?> deleteTask(@PathVariable UUID subjectId, @PathVariable UUID taskId){
+        try {
+            Optional<SubjectModel> subjectModelOp =  subjectService.getSubjectBySubjectId(subjectId);
+            if(!subjectModelOp.isPresent()){
+                return ResponseEntity.badRequest().body("Subject not found");
+            }
+            SubjectModel subjectModel = subjectModelOp.get();
+            subjectService.deleteTask(subjectModel, taskId);
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/update-task/{subjectId}")
+    public ResponseEntity<?> updateTask(@PathVariable UUID subjectId, @RequestBody TaskDTO taskDTO){
+        try {
+            Optional<SubjectModel> subjectModelOp =  subjectService.getSubjectBySubjectId(subjectId);
+            if(!subjectModelOp.isPresent()){
+                return ResponseEntity.badRequest().body("Subject not found");
+            }
+            SubjectModel subjectModel = subjectModelOp.get();
+            subjectService.updateTask(subjectModel, taskDTO);
+            return ResponseEntity.ok().build();
+        }
+        catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 }

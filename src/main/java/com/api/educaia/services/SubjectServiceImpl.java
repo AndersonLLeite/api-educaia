@@ -4,12 +4,15 @@ import com.api.educaia.dtos.*;
 import com.api.educaia.models.EvaluationModel;
 import com.api.educaia.models.GradeModel;
 import com.api.educaia.models.SubjectModel;
+import com.api.educaia.models.TaskModel;
 import com.api.educaia.repositories.EvaluationRepository;
 import com.api.educaia.repositories.SubjectRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -34,8 +37,8 @@ public class SubjectServiceImpl implements  SubjectService{
     }
 
     @Override
-    public SubjectModel getSubjectBySubjectId(UUID subjectId) {
-        return subjectRepository.findById(subjectId).orElseThrow();
+    public Optional<SubjectModel> getSubjectBySubjectId(UUID subjectId) {
+        return subjectRepository.findById(subjectId);
     }
 
     @Override
@@ -118,6 +121,38 @@ public class SubjectServiceImpl implements  SubjectService{
         }
         SubjectModel subjectModel = subjectModelOp.get();
         subjectModel.deleteEvaluation(evaluationId);
+        subjectRepository.save(subjectModel);
+    }
+
+    @Override
+    public TaskDTO addTaskToSubjectTasks(SubjectModel subjectModel, TaskModel taskModel) {
+        subjectModel.addTask(taskModel);
+        subjectRepository.save(subjectModel);
+        TaskModel newTask = subjectModel.getTasks().get(subjectModel.getTasks().size() - 1);
+        TaskDTO taskDTO = new TaskDTO(newTask.getId(), newTask.getSubjectName(), newTask.getTeacherName(), newTask.getTitle(), newTask.getDescription(), newTask.getDeadLineDate(), newTask.getCreationDate(), newTask.getSchoolId(), newTask.getClassId());
+        return taskDTO;
+    }
+
+    @Override
+    public List<TaskDTO> getTasksBySubject(SubjectModel subjectModel) {
+        List<TaskModel> tasks = subjectModel.getTasks();
+        List<TaskDTO> taskDTOS = new ArrayList<>();
+        for (TaskModel task : tasks) {
+            TaskDTO taskDTO = new TaskDTO(task.getId() ,task.getSubjectName(), task.getTeacherName(), task.getTitle(), task.getDescription(), task.getDeadLineDate(), task.getCreationDate(), task.getSchoolId(), task.getClassId());
+            taskDTOS.add(taskDTO);
+        }
+        return taskDTOS;
+    }
+
+    @Override
+    public void deleteTask(SubjectModel subjectModel, UUID taskId) {
+        subjectModel.deleteTask(taskId);
+        subjectRepository.save(subjectModel);
+    }
+
+    @Override
+    public void updateTask(SubjectModel subjectModel, TaskDTO taskDTO) {
+        subjectModel.setTask(taskDTO);
         subjectRepository.save(subjectModel);
     }
 
