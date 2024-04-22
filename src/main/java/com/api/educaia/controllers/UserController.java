@@ -29,11 +29,22 @@ public class UserController {
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
         var userModel = new UserModel();
         BeanUtils.copyProperties(userDTO, userModel);
-        System.out.println(userModel);
         UserModel userModelResponse  = userService.createUser(userModel);
 
         return new ResponseEntity<UserModel>(userModelResponse, HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/delete-user-by-userId/{userId}")
+    public ResponseEntity<?> deleteUserByUserId(@PathVariable UUID userId) {
+       try {
+              userService.deleteUserByUserId(userId);
+         }
+         catch (Exception e){
+              return ResponseEntity.badRequest().body(e.getMessage());
+       }
+         return ResponseEntity.ok().build();
+    }
+
     @RequestMapping(value = "/list-users", method = RequestMethod.GET)
     public ResponseEntity<?> listUsers() {
 
@@ -147,6 +158,7 @@ public class UserController {
         userService.addFollower(user, followerUsername);
         userService.addFollowing(follower, username);
         return ResponseEntity.ok().build();
+
     }
 
     @PutMapping("/removeFollow/{username}/{followerUsername}")

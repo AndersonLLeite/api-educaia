@@ -93,7 +93,7 @@ public class UserServiceImpl implements  UserService{
         }
         return usersPublicDTO;
     }
-
+    @Transactional
     @Override
     public void addFollower(UserModel user, String followerUsername) {
         if (user.getFollowers().contains(followerUsername)) {
@@ -102,7 +102,7 @@ public class UserServiceImpl implements  UserService{
         user.addFollower(followerUsername);
         userRepository.save(user);
     }
-
+    @Transactional
     @Override
     public void removeFollower(UserModel user, String followerUsername) {
         user.removeFollower(followerUsername);
@@ -169,7 +169,7 @@ public class UserServiceImpl implements  UserService{
     public List<UserIdentifierDTO> getUsersIdentifier(List<UserModel> users) {
         List<UserIdentifierDTO> usersIdentifier = new ArrayList<>();
         for (UserModel user : users) {
-            usersIdentifier.add(new UserIdentifierDTO(user.getId(), user.getNameComplete(), user.getProfileImagePath()));
+            usersIdentifier.add(new UserIdentifierDTO(user.getId(), user.getNameComplete(), user.getEnrollment(), user.getProfileImagePath()));
         }
         return usersIdentifier;
     }
@@ -177,6 +177,11 @@ public class UserServiceImpl implements  UserService{
     @Override
     public List<UserModel> fetchTeachersByScoolId(String schoolId) {
         return userRepository.getBySchoolIdAndRole(schoolId, RoleName.ROLE_TEACHER);
+    }
+    @Transactional
+    @Override
+    public void deleteUserByUserId(UUID userId) {
+        userRepository.deleteById(userId);
     }
 
 

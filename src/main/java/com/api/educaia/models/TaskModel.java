@@ -24,25 +24,24 @@ public class TaskModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
-    private String subject;
-    private String teacherName;
+    private String subjectName;
     private String title;
     private String description;
     private Long deadLineDate;
     private Long creationDate;
-    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "task_id")
-    private List<QuizQuestionModel> quizQuestions = new ArrayList<>();
-
+    private String teacherName;
+    //TODO remover essa lista de QuizQuestion, agora ela vai ficar dentro do QuizModel
+//    @OneToMany( cascade = CascadeType.ALL, orphanRemoval = true)
+//    @JoinColumn(name = "task_id")
+//    private List<QuizQuestionModel> quizQuestions = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "subject_id")
+    private SubjectModel subject;
     private String classId;
     private String schoolId;
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    private QuizModel quiz;
 
-    @JsonIgnore
-    public List<Integer> getCorrectAnswers() {
-        List<Integer> correctAnswers = new ArrayList<>();
-        for (QuizQuestionModel quizQuestion : quizQuestions) {
-            correctAnswers.add(quizQuestion.getCorrectAnswer());
-        }
-        return correctAnswers;
-    }
+
+
 }

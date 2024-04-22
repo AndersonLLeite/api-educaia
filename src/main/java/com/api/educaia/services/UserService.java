@@ -58,4 +58,6 @@ public interface UserService {
     List<UserIdentifierDTO> getUsersIdentifier(List<UserModel> students);
 
     List<UserModel> fetchTeachersByScoolId(String schoolId);
+
+    void deleteUserByUserId(UUID userId);
 }

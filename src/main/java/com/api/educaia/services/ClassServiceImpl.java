@@ -2,6 +2,7 @@ package com.api.educaia.services;
 
 import com.api.educaia.dtos.AvgClassDTO;
 import com.api.educaia.dtos.AvgSubjectsDTO;
+import com.api.educaia.dtos.ClassIdentifierDTO;
 import com.api.educaia.dtos.SubjectDTO;
 import com.api.educaia.models.ClassModel;
 import com.api.educaia.models.SubjectModel;
@@ -93,6 +94,32 @@ public class ClassServiceImpl implements ClassService{
        classRepository.save(classModel);
 
         return classModel.getSubjects().get(classModel.getSubjects().size() - 1).getId();
+    }
+
+    @Override
+    public List<ClassModel> getClassesByTeacherIdAndSchoolId(String teacherId, String schoolId) {
+        List<ClassModel> classes = classRepository.findAllBySchoolId(schoolId);
+        List<ClassModel> classesByTeacherId = new ArrayList<>();
+        for (ClassModel classModel : classes) {
+            for (SubjectModel subjectModel : classModel.getSubjects()) {
+                if (subjectModel.getTeacherId().equals(teacherId)) {
+                    classesByTeacherId.add(classModel);
+                    break;
+                }
+            }
+        }
+        return classesByTeacherId;
+    }
+
+    @Override
+    public List<ClassIdentifierDTO> getClassesIdentifierByClassesModel(List<ClassModel> classes) {
+        List<ClassIdentifierDTO> classIdentifierDTOS = new ArrayList<>();
+        for (ClassModel classModel : classes) {
+            ClassIdentifierDTO classIdentifierDTO = new ClassIdentifierDTO(classModel.getId(), classModel.getName());
+
+            classIdentifierDTOS.add(classIdentifierDTO);
+        }
+        return classIdentifierDTOS;
     }
 
 

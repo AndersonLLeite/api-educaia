@@ -32,11 +32,7 @@ public class QuizServiceImpl implements QuizService {
         return quizQuestionRepository.findAll();
     }
 
-    @Override
-    public void createQuiz(UUID taskId) {
-        QuizModel quizModel = new QuizModel(taskId);
-        quizRepository.save(quizModel);
-    }
+
 
     @Override
     public Optional<QuizModel> getQuizByTaskId(UUID taskId) {
@@ -60,18 +56,20 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public int calculateQuizScoreAndAddHitToQuizQuestionIfHit(TaskModel task, List<Integer> quizAnswers) {
-        List<Integer> correctAnswers = task.getCorrectAnswers();
+    public int calculateQuizScoreAndAddHitToQuizQuestionIfHit(QuizModel quiz, List<Integer> quizAnswers) {
+        List<Integer> correctAnswers = quiz.getCorrectAnswers();
         int score = 0;
         for (int i = 0; i < quizAnswers.size(); i++) {
             if(quizAnswers.get(i) != -1) {
                 if (quizAnswers.get(i) == correctAnswers.get(i)) {
                     score++;
-                    task.getQuizQuestions().get(i).addHit();
+                    quiz.getQuizQuestions().get(i).addHit();
+                } else {
+                    quiz.getQuizQuestions().get(i).addMiss();
                 }
             }
         }
-        taskService.saveTask(task);
+        quizRepository.save(quiz);
         return score;
     }
 

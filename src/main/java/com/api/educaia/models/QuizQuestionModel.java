@@ -33,9 +33,9 @@ public class QuizQuestionModel{
     @Column(name = "answer")
     private List<String> answers;
     private int hits = 0;
+    private int misses = 0;
 
     @NotNull
-    @JsonIgnore
     @Column(name = "correct_answer")
     private Integer correctAnswer;
 
@@ -50,8 +50,18 @@ public class QuizQuestionModel{
         this.taskId = taskId;
     }
 
+    public QuizQuestionModel(String question, List<String> answers, int correctAnswer, UUID taskId) {
+        this.question = question;
+        this.answers = answers;
+        this.correctAnswer = correctAnswer;
+        this.taskId = taskId;
+
+    }
+
     public void addHit() {
         this.hits++;
     }
+
+    public void addMiss(){this.misses++;}
 
 }

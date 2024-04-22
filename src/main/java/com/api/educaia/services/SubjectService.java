@@ -1,14 +1,13 @@
 package com.api.educaia.services;
 
-import com.api.educaia.dtos.AvgClassDTO;
-import com.api.educaia.dtos.SubjectDTO;
-import com.api.educaia.dtos.SubjectIdentifierDTO;
-import com.api.educaia.dtos.UserIdentifierDTO;
-import com.api.educaia.models.ClassModel;
+import com.api.educaia.dtos.*;
+import com.api.educaia.models.EvaluationModel;
 import com.api.educaia.models.GradeModel;
 import com.api.educaia.models.SubjectModel;
+import com.api.educaia.models.TaskModel;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface SubjectService {
@@ -17,13 +16,30 @@ public interface SubjectService {
 
     List<SubjectModel> getSubjectsByClassId(String classId);
 
-    SubjectModel getSubjectBySubjectId(UUID subjectId);
+    Optional<SubjectModel> getSubjectBySubjectId(UUID subjectId);
 
-    void addGradeToSubject(SubjectModel subjectModel, GradeModel gradeModel);
+    UUID addGradeToSubjectEvaluation(UUID evaluationId, GradeDTO gradeDTO);
 
     List<SubjectIdentifierDTO> getSubjectsIdentifierBySubjectsModel(List<SubjectModel> subjectModels);
 
 
     void assignTeacherToSubject(UUID subjectId, UserIdentifierDTO teacher);
 
+    List<SubjectModel> getSubjectsByClassIdAndTeacherId(String classId, String teacherId);
+
+    List<EvaluationDTO> getEvaluationsDTOByEvaluationsModel(List<EvaluationModel> evaluations);
+
+    UUID addEvaluationToSubjectEvaluation(SubjectModel subjectModel, EvaluationDTO evaluationDTO);
+
+    List<EvaluationModel> listEvaluations();
+
+    void deleteEvaluation(UUID subjectId, String evaluationId);
+
+    TaskDTO addTaskToSubjectTasks(SubjectModel subjectModel, TaskModel taskModel);
+
+    List<TaskDTO> getTasksBySubject(SubjectModel subjectModel);
+
+    void deleteTask(SubjectModel subjectModel, UUID taskId);
+
+    void updateTask(SubjectModel subjectModel, TaskDTO taskDTO);
 }

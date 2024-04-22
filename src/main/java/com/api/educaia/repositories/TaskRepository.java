@@ -18,4 +18,8 @@ public interface TaskRepository extends JpaRepository<TaskModel, UUID> {
 
    @Query("SELECT COUNT(t) FROM TaskModel t WHERE t.classId = :classId AND t.creationDate = :today")
    Long countTasksByClassIdAndCreationDate(@Param("classId") String classId, @Param("today") Long today);
+
+    @Query("SELECT t FROM TaskModel t WHERE t.creationDate = :creationDate AND t.classId = :classId")
+   List<TaskModel> findByCreationDateAndClassId(@Param("creationDate")
+     Long creationDate, @Param("classId") String classId);
 }

@@ -1,9 +1,6 @@
 package com.api.educaia.models;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serial;
@@ -14,6 +11,7 @@ import java.util.UUID;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
 @Table(name = "grade")
 public class GradeModel implements Serializable {
     @Serial
@@ -22,10 +20,13 @@ public class GradeModel implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     private String name;
+    private String evaluationId;
 //    private String subjectId;
 //    private String schoolId;
 //    private String classId;
     private String userId;
     private double grade;
     private String Status;
+
+
 }
