@@ -29,7 +29,6 @@ public class UserController {
     public ResponseEntity<?> createUser(@RequestBody UserDTO userDTO) {
         var userModel = new UserModel();
         BeanUtils.copyProperties(userDTO, userModel);
-        System.out.println(userModel);
         UserModel userModelResponse  = userService.createUser(userModel);
 
         return new ResponseEntity<UserModel>(userModelResponse, HttpStatus.CREATED);

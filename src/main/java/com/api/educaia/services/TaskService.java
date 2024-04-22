@@ -1,6 +1,8 @@
 package com.api.educaia.services;
 
-import com.api.educaia.models.RateModel;
+import com.api.educaia.dtos.QuizDTO;
+import com.api.educaia.dtos.QuizQuestionDTO;
+import com.api.educaia.dtos.TaskDTO;
 import com.api.educaia.models.TaskModel;
 
 import java.util.List;
@@ -11,7 +13,7 @@ public interface TaskService {
     public TaskModel createTask(TaskModel taskModel);
     public List<TaskModel> listTasks();
 
-    List<TaskModel> getTasksByCreationDate(Long creationDate);
+    List<TaskModel> getTasksByCreationDateAndClassId(Long creationDate, String classId);
 
     Optional<TaskModel> getTaskById(UUID id);
 
@@ -22,4 +24,11 @@ public interface TaskService {
     void createRateResponse(UUID taskID);
 
 
+    QuizDTO getQuiz(TaskModel task);
+
+    QuizDTO createQuiz(QuizDTO quizDTO, TaskModel task);
+
+    QuizQuestionDTO addQuestion(TaskModel task, QuizQuestionDTO quizQuestionDTO);
+
+    List<TaskDTO> convertTaskModelToTaskDTO(List<TaskModel> tasks);
 }

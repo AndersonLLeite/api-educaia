@@ -65,20 +65,8 @@ public class assistantController {
     }
 
     @PostMapping("/quiz")
-    public ResponseEntity<?> quiz(@RequestBody MessageDTO message) {
-        MessageDTO fixedMessage = new MessageDTO(
-                "user",
-                String.format("Gere 10 questões de quiz para %s. incluindo respostas erradas\n" +
-                                "formate a resposta como JSON nesse formato: \n" +
-                                "\"question\": \"Who is Luke Skywalker's father?\",\n" +
-                                "  \"answers\": [\"Obi-Wan Kenobi\", \"Emperor Palpatine\", \"Yoda\", \"Dart Vader\"],\n" +
-                                "  \"correctAnswer\": 4 ",
-                        message)
-        );
-
-        List<MessageDTO> messages = new ArrayList<>();
-        messages.add(0, fixedMessage);
-        ChatRequestDTO request = new ChatRequestDTO(model, messages);
+    public ResponseEntity<?> quiz(@RequestBody String description) {
+        ChatRequestDTO request = getChatRequestDTO(description);
         ChatResponseDTO response = restTemplate.postForObject(
                 apiUrl,
                 request,
@@ -88,21 +76,38 @@ public class assistantController {
             return ResponseEntity.notFound().build();
         }
 
-        List<QuizQuestionDTO> quizQuestions = convertResponseToQuizQuestions(response.getChoices().get(0).getMessage().getContent());
-
-        // Agora você pode usar a lista de QuizQuestionModel como desejar
-        if (quizQuestions != null) {
-            List<QuizQuestionDTO> quizQuestionDTOs = new ArrayList<>();
-            for (QuizQuestionDTO question : quizQuestions) {
-                QuizQuestionDTO quizQuestionDTO = new QuizQuestionDTO(question.getQuestion(), question.getAnswers(), question.getCorrectAnswer());
-                quizQuestionDTOs.add(quizQuestionDTO);
-            }
-            return ResponseEntity.ok(quizQuestionDTOs);
+        try {
+            List<QuizQuestionDTO> quizQuestions = convertResponseToQuizQuestions(response.getChoices().get(0).getMessage().getContent());
+            return ResponseEntity.ok(quizQuestions);
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
         }
 
 
-        return ResponseEntity.notFound().build();
     }
+
+    private ChatRequestDTO getChatRequestDTO(String description) {
+        MessageDTO fixedMessage = new MessageDTO(
+                "user",
+                String.format("Gere 10 questões de quiz para o seguinte tema: %s. Inclua respostas erradas.\n" +
+                                "Formate a resposta como JSON seguindo este formato de exemplo, sendo uma lista de objetos: \n" +
+                                "[\n" +
+                                "{\n" +
+                                "    \"question\": \"Qual foi a participação do Japão na Segunda Guerra Mundial?\",\n" +
+                                "    \"answers\": [\"O Japão não participou da Segunda Guerra Mundial\", \"O Japão foi um dos Aliados na guerra\", \"O Japão foi um dos países do Eixo na guerra\", \"O Japão teve uma atuação neutra na guerra\"],\n" +
+                                "    \"correctAnswer\": 2\n" +
+                                "}, \n" +
+                                "]\n",
+
+                        description)
+        );
+
+        List<MessageDTO> messages = new ArrayList<>();
+        messages.add(0, fixedMessage);
+        ChatRequestDTO request = new ChatRequestDTO(model, messages);
+        return request;
+    }
+
 
 
 }

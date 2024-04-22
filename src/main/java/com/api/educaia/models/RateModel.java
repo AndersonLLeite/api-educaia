@@ -20,6 +20,7 @@ public class RateModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+    //TODO remover taskId
     private UUID taskId;
     @ElementCollection
     private List<String> studentsWhoAnswered;

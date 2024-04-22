@@ -14,7 +14,7 @@ public interface QuizService {
 
     public List<QuizQuestionModel> listQuizQuestions();
 
-    void createQuiz(UUID taskId);
+
 
     Optional<QuizModel> getQuizByTaskId(UUID taskId);
 
@@ -24,7 +24,8 @@ public interface QuizService {
 
     List<QuizModel> listQuiz();
 
-    int calculateQuizScoreAndAddHitToQuizQuestionIfHit(TaskModel task, List<Integer> quizAnswers);
+    int calculateQuizScoreAndAddHitToQuizQuestionIfHit(QuizModel quiz, List<Integer> quizAnswers);
 
     int calculateQuizPoints(int score);
+
 }

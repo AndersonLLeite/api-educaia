@@ -73,7 +73,7 @@ public class QuizController {
             return new ResponseEntity<String>("Task not found", HttpStatus.NOT_FOUND);
         }
         TaskModel task = taskOp.get();
-        int score = quizService.calculateQuizScoreAndAddHitToQuizQuestionIfHit(task, quizAnswers);
+        int score = quizService.calculateQuizScoreAndAddHitToQuizQuestionIfHit(quiz, quizAnswers);
         int points = quizService.calculateQuizPoints(score);
         Optional<UserModel> userOp = userService.getUserByUsername(username);
         if(!userOp.isPresent())

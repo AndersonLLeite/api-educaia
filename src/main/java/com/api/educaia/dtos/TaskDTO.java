@@ -27,5 +27,17 @@ public class TaskDTO  {
     private String classId;
     private String schoolId;
 
+    //crie o construtor
+//    public TaskDTO(UUID id, String subjectName, String teacherName, String title, String description, Long deadLineDate, Long creationDate, String classId, String schoolId) {
+//        this.id = id;
+//        this.subjectName = subjectName;
+//        this.teacherName = teacherName;
+//        this.title = title;
+//        this.description = description;
+//        this.deadLineDate = deadLineDate;
+//        this.creationDate = creationDate;
+//        this.classId = classId;
+//        this.schoolId = schoolId;
+//    }
 
 }

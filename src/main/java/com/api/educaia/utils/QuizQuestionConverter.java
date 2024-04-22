@@ -23,9 +23,9 @@ public class QuizQuestionConverter {
 
             return quizQuestions;
         } catch (IOException e) {
-            e.printStackTrace();
-            // Lida com a exceção, você pode lançar ou lidar de outra forma conforme necessário.
+            System.out.println("Erro ao converter JSON para QuizQuestionModel");
             return null;
+
         }
     }
 }
