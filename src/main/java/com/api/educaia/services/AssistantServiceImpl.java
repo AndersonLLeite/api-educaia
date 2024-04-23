@@ -19,8 +19,7 @@ import java.util.List;
 @Service
 public class AssistantServiceImpl implements  AssistantService{
 
-    private final Dotenv dotenv = Dotenv.load();
-    private final String openAIAPIKey = dotenv.get("OPENAI_API_KEY");
+    private final String openAIAPIKey = "${openai.api.key}";
     private List<JSONObject> messages = new ArrayList<>();
     private final String url = "https://api.openai.com/v1/engines/davinci/completions";
     @Override
