@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
+import org.springframework.web.cors.CorsConfiguration;
 
 @Configuration
 @EnableWebSecurity
@@ -23,9 +24,16 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        CorsConfiguration corsConfiguration = new CorsConfiguration();
+        corsConfiguration.addAllowedOriginPattern("*"); // Permitir todas as origens
+        corsConfiguration.addAllowedMethod("*"); // Permitir todos os métodos (GET, POST, PUT, DELETE, etc.)
+        corsConfiguration.addAllowedHeader("*"); // Permitir todos os cabeçalhos
+        corsConfiguration.setAllowCredentials(true); // Permitir credenciais
+
         http
                 .csrf()
                 .disable()
+                .cors(cors -> cors.configurationSource(request -> corsConfiguration))
                 .authorizeHttpRequests()
                 .antMatchers("/api/v1/auth/**")
 
